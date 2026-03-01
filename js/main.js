@@ -7,7 +7,7 @@
 // Step 1: Google Sheets mein jaao → Tools → Apps Script
 // Step 2: Wahan script paste karo (README mein diya hai)
 // Step 3: Deploy karo aur URL yahan paste karo:
-const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbwzoByknR-enOP5knr5BnY3OeGJR2lapamhERaMY3xP1r_dasSSMRCsIDjqCiL77Kj6pw/exec';
+const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbwvDDwU_7gzGYXDeVi8R1q1ZI9eIPFoJkF8knglepXCrZbXATpgTC4Tk5Ey8GIGUiYQJA/exec';
 // Example: 'https://script.google.com/macros/s/AKfycbx.../exec'
 
 // Google Sheet mein data bhejne ka function
