@@ -10,26 +10,30 @@
 const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbwvDDwU_7gzGYXDeVi8R1q1ZI9eIPFoJkF8knglepXCrZbXATpgTC4Tk5Ey8GIGUiYQJA/exec';
 // Example: 'https://script.google.com/macros/s/AKfycbx.../exec'
 
-// Google Sheet mein data bhejne ka function
+// Google Sheet mein data bhejne ka function 
 async function sendToGoogleSheet(sheetName, data) {
-  if (GOOGLE_SHEET_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
+  if (!GOOGLE_SHEET_URL || GOOGLE_SHEET_URL.includes('YOUR_GOOGLE_APPS_SCRIPT_URL_HERE')) {
     console.warn('⚠️ Google Sheet URL set nahi hai — sirf localStorage mein save ho raha hai');
     return false;
   }
+
   try {
-    await fetch(GOOGLE_SHEET_URL, {
+    const response = await fetch(GOOGLE_SHEET_URL, {
       method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ sheet: sheetName, ...data })
+      body: JSON.stringify({
+        sheet: sheetName,
+        ...data
+      })
     });
+
+    console.log('✅ Sent to Google Sheet');
     return true;
+
   } catch (err) {
-    console.error('Google Sheet error:', err);
+    console.error('❌ Google Sheet error:', err);
     return false;
   }
 }
-
 // ===== LOCAL BACKEND (localStorage DB) =====
 const DB = {
   contacts: JSON.parse(localStorage.getItem('pf_contacts') || '[]'),
