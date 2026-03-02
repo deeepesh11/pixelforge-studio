@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TravelFlow — Discover Your Next Adventure</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Inter:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --sky: #0ea5e9;
+  --ocean: #0369a1;
+  --sand: #fef3c7;
+  --coral: #f97316;
+  --coral2: #fb923c;
+  --deep: #0c1445;
+  --white: #ffffff;
+  --muted: rgba(255,255,255,0.6);
+  --card-bg: rgba(255,255,255,0.08);
+  --border: rgba(255,255,255,0.12);
+  --radius: 20px;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background: var(--deep);
+  color: var(--white);
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+  cursor: none;
+}
+a{text-decoration:none;color:inherit}
+
+/* CURSOR */
+#cur{width:10px;height:10px;background:var(--coral);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9999;transition:transform 0.1s}
+#cur-ring{width:36px;height:36px;border:2px solid rgba(249,115,22,0.5);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9998;transition:all 0.15s ease}
+
+/* SCROLL PROGRESS */
+.scroll-bar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--coral),var(--sky));z-index:600;width:0;transition:width 0.1s}
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:500;
+  padding:24px 60px;
+  display:flex;align-items:center;justify-content:space-between;
+  background:transparent;transition:all 0.4s ease;
+}
+nav.scrolled{background:rgba(12,20,69,0.95);backdrop-filter:blur(20px);padding:16px 60px;border-bottom:1px solid var(--border)}
+.nav-logo{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:900;letter-spacing:-0.02em}
+.nav-logo span{color:var(--coral)}
+.nav-links{display:flex;gap:32px;list-style:none}
+.nav-links a{font-size:0.88rem;font-weight:500;color:var(--muted);transition:color 0.3s;letter-spacing:0.02em}
+.nav-links a:hover{color:var(--white)}
+.nav-btn{background:var(--coral);color:white;border:none;padding:10px 24px;border-radius:100px;font-family:'Inter',sans-serif;font-weight:600;font-size:0.85rem;cursor:pointer;transition:all 0.3s}
+.nav-btn:hover{background:var(--coral2);transform:translateY(-2px);box-shadow:0 8px 25px rgba(249,115,22,0.4)}
+
+/* HERO */
+.hero{
+  min-height:100vh;position:relative;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+}
+.hero-bg{
+  position:absolute;inset:0;
+  background:linear-gradient(135deg,#0c1445 0%,#0369a1 40%,#0ea5e9 70%,#38bdf8 100%);
+}
+.hero-bg::after{
+  content:'';position:absolute;inset:0;
+  background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+.hero-waves{position:absolute;bottom:0;left:0;right:0}
+.wave{animation:wave 8s ease-in-out infinite}
+.wave2{animation:wave 10s ease-in-out infinite reverse;opacity:0.5}
+.wave3{animation:wave 12s ease-in-out infinite;opacity:0.3}
+
+.hero-content{
+  position:relative;z-index:2;text-align:center;
+  max-width:800px;padding:0 24px;
+}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);
+  color:var(--sand);font-family:'Space Mono',monospace;font-size:0.72rem;
+  padding:6px 16px;border-radius:100px;margin-bottom:32px;
+  animation:fadeUp 0.6s ease 0.1s both;letter-spacing:0.1em;
+}
+.hero-badge::before{content:'✈';animation:fly 3s ease-in-out infinite}
+.hero-title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(3.5rem,8vw,6.5rem);
+  font-weight:900;line-height:1.0;
+  letter-spacing:-0.03em;margin-bottom:24px;
+  animation:fadeUp 0.6s ease 0.2s both;
+}
+.hero-title .italic{font-style:italic;color:var(--sand)}
+.hero-desc{
+  font-size:1.1rem;color:var(--muted);max-width:500px;
+  margin:0 auto 48px;line-height:1.7;font-weight:300;
+  animation:fadeUp 0.6s ease 0.3s both;
+}
+.hero-actions{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;animation:fadeUp 0.6s ease 0.4s both}
+.btn-primary{
+  background:var(--coral);color:white;padding:16px 36px;
+  border-radius:100px;font-weight:600;font-size:1rem;
+  border:none;cursor:pointer;transition:all 0.3s;
+  display:inline-flex;align-items:center;gap:10px;
+}
+.btn-primary:hover{background:var(--coral2);transform:translateY(-3px);box-shadow:0 12px 40px rgba(249,115,22,0.5)}
+.btn-outline{
+  background:transparent;color:white;padding:16px 36px;
+  border-radius:100px;font-weight:600;font-size:1rem;
+  border:2px solid rgba(255,255,255,0.3);cursor:pointer;
+  transition:all 0.3s;display:inline-flex;align-items:center;gap:10px;
+}
+.btn-outline:hover{border-color:white;background:rgba(255,255,255,0.1)}
+
+/* SEARCH BAR */
+.search-bar{
+  position:relative;z-index:2;
+  background:rgba(255,255,255,0.95);border-radius:var(--radius);
+  padding:8px;display:grid;grid-template-columns:1fr 1fr 1fr auto;
+  gap:8px;max-width:800px;margin:0 auto;
+  box-shadow:0 30px 80px rgba(0,0,0,0.3);
+  animation:fadeUp 0.6s ease 0.5s both;
+}
+.search-field{padding:12px 20px}
+.search-field label{display:block;font-size:0.7rem;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px}
+.search-field input,.search-field select{
+  border:none;outline:none;font-family:'Inter',sans-serif;
+  font-size:0.9rem;color:#0c1445;font-weight:500;width:100%;
+  background:transparent;
+}
+.search-field select{cursor:pointer}
+.search-submit{
+  background:var(--coral);color:white;border:none;
+  border-radius:12px;padding:0 28px;font-weight:700;
+  font-size:0.9rem;cursor:pointer;white-space:nowrap;
+  transition:all 0.3s;
+}
+.search-submit:hover{background:var(--coral2);transform:scale(1.02)}
+
+/* STATS */
+.stats-row{
+  display:flex;justify-content:center;gap:60px;flex-wrap:wrap;
+  padding:60px;border-bottom:1px solid var(--border);
+}
+.stat-item{text-align:center}
+.stat-num{font-family:'Playfair Display',serif;font-size:2.5rem;font-weight:900;color:var(--sand)}
+.stat-label{font-size:0.82rem;color:var(--muted);margin-top:4px}
+
+/* SECTIONS */
+.section{padding:100px 60px}
+.section-tag{
+  font-family:'Space Mono',monospace;font-size:0.72rem;
+  color:var(--coral);letter-spacing:0.15em;text-transform:uppercase;
+  margin-bottom:16px;display:flex;align-items:center;gap:10px;
+}
+.section-tag::after{content:'';width:40px;height:1px;background:var(--coral);opacity:0.5}
+.section-title{
+  font-family:'Playfair Display',serif;font-size:clamp(2rem,4vw,3rem);
+  font-weight:900;letter-spacing:-0.02em;line-height:1.1;margin-bottom:16px;
+}
+.section-desc{color:var(--muted);font-size:1rem;max-width:500px;line-height:1.7;font-weight:300;margin-bottom:60px}
+
+/* DESTINATIONS */
+.dest-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.dest-card{
+  border-radius:var(--radius);overflow:hidden;cursor:pointer;
+  position:relative;transition:transform 0.4s ease;
+  aspect-ratio:3/4;
+}
+.dest-card:first-child{grid-row:span 2;aspect-ratio:auto}
+.dest-card:hover{transform:scale(1.02)}
+.dest-bg{
+  position:absolute;inset:0;transition:transform 0.6s ease;
+}
+.dest-card:hover .dest-bg{transform:scale(1.08)}
+.d1{background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460,#533483)}
+.d2{background:linear-gradient(135deg,#2d1b69,#11998e,#38ef7d)}
+.d3{background:linear-gradient(135deg,#f7971e,#ffd200)}
+.d4{background:linear-gradient(135deg,#fc466b,#3f5efb)}
+.d5{background:linear-gradient(135deg,#43cea2,#185a9d)}
+.dest-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(12,20,69,0.9) 0%,transparent 60%);
+}
+.dest-info{position:absolute;bottom:0;left:0;right:0;padding:28px}
+.dest-emoji{font-size:2.5rem;margin-bottom:8px;display:block}
+.dest-name{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;margin-bottom:6px}
+.dest-sub{font-size:0.82rem;color:var(--muted);margin-bottom:12px}
+.dest-price{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--coral);color:white;
+  font-family:'Space Mono',monospace;font-size:0.78rem;font-weight:700;
+  padding:5px 12px;border-radius:100px;
+}
+.dest-tag{
+  position:absolute;top:20px;right:20px;
+  background:rgba(255,255,255,0.15);backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,0.2);
+  font-size:0.72rem;font-weight:600;padding:5px 12px;
+  border-radius:100px;letter-spacing:0.05em;
+}
+.dest-tag.hot{background:rgba(249,115,22,0.3);border-color:var(--coral);color:var(--sand)}
+
+/* PACKAGES */
+.pkg-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px}
+.pkg-card{
+  background:var(--card-bg);border:1px solid var(--border);
+  border-radius:var(--radius);padding:32px;
+  transition:all 0.4s ease;position:relative;overflow:hidden;
+}
+.pkg-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:var(--coral);transform:scaleX(0);transition:transform 0.4s ease;
+}
+.pkg-card:hover{transform:translateY(-8px);border-color:rgba(249,115,22,0.3);background:rgba(255,255,255,0.1)}
+.pkg-card:hover::before{transform:scaleX(1)}
+.pkg-card.featured{border-color:var(--coral);background:rgba(249,115,22,0.08)}
+.pkg-card.featured::before{transform:scaleX(1)}
+.pkg-badge{
+  display:inline-block;background:var(--coral);color:white;
+  font-size:0.68rem;font-weight:700;padding:4px 10px;
+  border-radius:100px;margin-bottom:20px;letter-spacing:0.08em;
+}
+.pkg-name{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;margin-bottom:8px}
+.pkg-days{font-family:'Space Mono',monospace;font-size:0.75rem;color:var(--coral);margin-bottom:16px}
+.pkg-desc{color:var(--muted);font-size:0.88rem;line-height:1.7;margin-bottom:24px}
+.pkg-includes{list-style:none;margin-bottom:28px;display:flex;flex-direction:column;gap:10px}
+.pkg-includes li{display:flex;align-items:center;gap:10px;font-size:0.85rem;color:var(--muted)}
+.pkg-includes li::before{content:'✓';color:var(--coral);font-weight:700}
+.pkg-price{font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;margin-bottom:4px}
+.pkg-price span{font-size:1rem;color:var(--muted);font-family:'Inter',sans-serif;font-weight:400}
+.pkg-btn{
+  width:100%;padding:12px;border-radius:100px;font-weight:600;
+  font-size:0.9rem;cursor:pointer;transition:all 0.3s;border:none;
+  background:var(--coral);color:white;margin-top:20px;
+}
+.pkg-btn:hover{background:var(--coral2);transform:translateY(-2px)}
+.pkg-btn.outline{background:transparent;border:1.5px solid var(--border);color:var(--white)}
+.pkg-btn.outline:hover{border-color:var(--coral);color:var(--coral)}
+
+/* EXPERIENCES */
+.exp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px}
+.exp-card{
+  background:var(--card-bg);border:1px solid var(--border);
+  border-radius:var(--radius);padding:32px 24px;text-align:center;
+  transition:all 0.4s ease;cursor:pointer;
+}
+.exp-card:hover{border-color:var(--coral);transform:translateY(-6px);background:rgba(249,115,22,0.08)}
+.exp-icon{font-size:2.5rem;margin-bottom:16px;display:block}
+.exp-name{font-family:'Playfair Display',serif;font-weight:700;font-size:1.05rem;margin-bottom:8px}
+.exp-desc{font-size:0.82rem;color:var(--muted);line-height:1.6}
+
+/* TESTIMONIALS */
+.testi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
+.testi-card{
+  background:var(--card-bg);border:1px solid var(--border);
+  border-radius:var(--radius);padding:32px;transition:all 0.4s ease;
+}
+.testi-card:hover{border-color:rgba(249,115,22,0.3);transform:translateY(-4px)}
+.testi-stars{color:var(--sand);font-size:0.9rem;margin-bottom:16px;letter-spacing:3px}
+.testi-text{font-size:0.95rem;color:var(--muted);line-height:1.8;font-style:italic;margin-bottom:24px}
+.testi-author{display:flex;align-items:center;gap:12px}
+.testi-av{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1rem}
+.av-a{background:linear-gradient(135deg,#f97316,#fcd34d);color:#0c1445}
+.av-b{background:linear-gradient(135deg,#0ea5e9,#6366f1);color:white}
+.av-c{background:linear-gradient(135deg,#10b981,#0ea5e9);color:white}
+.testi-name{font-weight:700;font-size:0.9rem;margin-bottom:2px}
+.testi-role{font-size:0.78rem;color:var(--muted)}
+
+/* BOOKING FORM */
+.booking-section{
+  background:linear-gradient(135deg,rgba(14,165,233,0.1),rgba(249,115,22,0.08));
+  border:1px solid var(--border);border-radius:28px;
+  padding:60px;margin:0 60px;
+}
+.booking-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start}
+.form-group{margin-bottom:20px}
+.form-label{
+  display:block;font-family:'Space Mono',monospace;font-size:0.7rem;
+  color:var(--muted);margin-bottom:8px;letter-spacing:0.1em;text-transform:uppercase;
+}
+.form-input,.form-select{
+  width:100%;background:rgba(255,255,255,0.05);border:1.5px solid var(--border);
+  color:white;padding:14px 18px;border-radius:12px;
+  font-family:'Inter',sans-serif;font-size:0.9rem;outline:none;
+  transition:border-color 0.3s;
+}
+.form-input:focus,.form-select:focus{border-color:var(--coral)}
+.form-input::placeholder{color:rgba(255,255,255,0.3)}
+.form-select option{background:#0c1445}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+
+/* NEWSLETTER */
+.newsletter{
+  text-align:center;padding:100px 60px;
+  background:linear-gradient(135deg,#0c1445,#0369a1);
+  position:relative;overflow:hidden;
+}
+.newsletter::before{
+  content:'✈';font-size:200px;position:absolute;
+  right:-40px;top:50%;transform:translateY(-50%);
+  opacity:0.04;pointer-events:none;
+}
+.nl-input-wrap{
+  display:flex;gap:12px;max-width:480px;margin:0 auto;flex-wrap:wrap;
+}
+.nl-input{
+  flex:1;min-width:200px;background:rgba(255,255,255,0.1);
+  border:1.5px solid rgba(255,255,255,0.2);color:white;
+  padding:14px 20px;border-radius:100px;font-family:'Inter',sans-serif;
+  font-size:0.9rem;outline:none;transition:border-color 0.3s;
+}
+.nl-input:focus{border-color:var(--coral)}
+.nl-input::placeholder{color:rgba(255,255,255,0.4)}
+
+/* FOOTER */
+footer{background:#060d2e;border-top:1px solid var(--border);padding:80px 60px 40px}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:60px;margin-bottom:60px}
+.footer-brand p{color:var(--muted);font-size:0.88rem;line-height:1.7;max-width:280px;margin-top:12px}
+.footer-col h4{font-family:'Playfair Display',serif;font-weight:700;margin-bottom:20px}
+.footer-links{list-style:none;display:flex;flex-direction:column;gap:10px}
+.footer-links a{color:var(--muted);font-size:0.87rem;transition:color 0.3s}
+.footer-links a:hover{color:var(--coral)}
+.footer-bottom{border-top:1px solid var(--border);padding-top:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.footer-bottom p{font-size:0.82rem;color:var(--muted)}
+
+/* TOAST */
+.toast{
+  position:fixed;bottom:30px;right:30px;z-index:9000;
+  background:rgba(12,20,69,0.95);backdrop-filter:blur(20px);
+  border:1px solid rgba(249,115,22,0.3);border-radius:14px;
+  padding:16px 20px;display:flex;align-items:center;gap:12px;
+  transform:translateY(100px);opacity:0;transition:all 0.4s cubic-bezier(0.4,0,0.2,1);
+  max-width:320px;
+}
+.toast.show{transform:translateY(0);opacity:1}
+.toast-title{font-weight:700;color:var(--coral);font-size:0.9rem;margin-bottom:2px}
+.toast-msg{color:var(--muted);font-size:0.8rem}
+
+/* BACK BUTTON */
+.back-btn{
+  position:fixed;top:100px;left:30px;z-index:400;
+  background:rgba(12,20,69,0.9);backdrop-filter:blur(10px);
+  border:1px solid var(--border);color:white;
+  padding:10px 20px;border-radius:100px;font-size:0.85rem;
+  font-weight:600;cursor:pointer;transition:all 0.3s;
+  display:flex;align-items:center;gap:8px;
+}
+.back-btn:hover{border-color:var(--coral);color:var(--coral)}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fly{0%,100%{transform:translateX(0) rotate(0deg)}50%{transform:translateX(4px) rotate(5deg)}}
+@keyframes wave{0%,100%{d:path('M0,160L48,138.7C96,117,192,75,288,74.7C384,75,480,117,576,128C672,139,768,117,864,101.3C960,85,1056,75,1152,80C1248,85,1344,107,1392,117.3L1440,128L1440,320L0,320Z')}50%{d:path('M0,192L48,181.3C96,171,192,149,288,154.7C384,160,480,192,576,197.3C672,203,768,181,864,165.3C960,149,1056,149,1152,160C1248,171,1344,203,1392,218.7L1440,234L1440,320L0,320Z')}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* RESPONSIVE */
+@media(max-width:1024px){
+  nav{padding:16px 30px}
+  .section{padding:80px 30px}
+  .booking-section{margin:0 30px;padding:40px 30px}
+  footer{padding:60px 30px 30px}
+  .footer-grid{grid-template-columns:1fr 1fr;gap:40px}
+  .newsletter{padding:80px 30px}
+  .stats-row{padding:40px 30px}
+}
+@media(max-width:768px){
+  .nav-links,.nav-btn{display:none}
+  .dest-grid{grid-template-columns:1fr}
+  .dest-card:first-child{grid-row:auto}
+  .booking-grid{grid-template-columns:1fr}
+  .form-row{grid-template-columns:1fr}
+  .search-bar{grid-template-columns:1fr}
+  .footer-grid{grid-template-columns:1fr}
+  body{cursor:auto}
+  #cur,#cur-ring{display:none}
+}
+</style>
+</head>
+<body>
+
+<div id="cur"></div>
+<div id="cur-ring"></div>
+<div class="scroll-bar" id="scroll-bar"></div>
+
+<!-- BACK BUTTON -->
+<button class="back-btn" onclick="window.history.back()">← Back to Portfolio</button>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <div>
+    <div class="toast-title" id="toast-title">Done!</div>
+    <div class="toast-msg" id="toast-msg"></div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-logo">Travel<span>Flow</span></div>
+  <ul class="nav-links">
+    <li><a href="#destinations">Destinations</a></li>
+    <li><a href="#packages">Packages</a></li>
+    <li><a href="#experiences">Experiences</a></li>
+    <li><a href="#booking">Book Now</a></li>
+  </ul>
+  <button class="nav-btn" onclick="scrollToBooking()">Plan My Trip ✈</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div style="position:relative;z-index:2;width:100%;padding:0 60px;padding-top:100px">
+    <div class="hero-content" style="margin-bottom:60px">
+      <div class="hero-badge">✈ &nbsp; 12,000+ Happy Travelers · Est. 2019</div>
+      <h1 class="hero-title">
+        Explore the World<br>
+        <span class="italic">Your Way</span>
+      </h1>
+      <p class="hero-desc">Handcrafted travel experiences to 120+ destinations. From luxury escapes to adventure treks — we make every journey unforgettable.</p>
+      <div class="hero-actions">
+        <button class="btn-primary" onclick="scrollToBooking()">Plan My Trip ✈</button>
+        <button class="btn-outline" onclick="document.getElementById('destinations').scrollIntoView({behavior:'smooth'})">Explore Destinations →</button>
+      </div>
+    </div>
+
+    <!-- SEARCH BAR -->
+    <div class="search-bar">
+      <div class="search-field">
+        <label>Destination</label>
+        <input type="text" placeholder="Where to?">
+      </div>
+      <div class="search-field">
+        <label>Check In</label>
+        <input type="date">
+      </div>
+      <div class="search-field">
+        <label>Travelers</label>
+        <select>
+          <option>1 Adult</option>
+          <option>2 Adults</option>
+          <option>2 Adults + 1 Child</option>
+          <option>Group (5+)</option>
+        </select>
+      </div>
+      <button class="search-submit" onclick="showToast('Searching! 🔍','Finding best deals for you...')">Search Trips</button>
+    </div>
+  </div>
+
+  <!-- WAVES -->
+  <div class="hero-waves">
+    <svg viewBox="0 0 1440 120" xmlns="http://www.w3.org/2000/svg">
+      <path class="wave" fill="rgba(12,20,69,0.6)" d="M0,64L48,69.3C96,75,192,85,288,80C384,75,480,53,576,48C672,43,768,53,864,64C960,75,1056,85,1152,80C1248,75,1344,53,1392,42.7L1440,32L1440,120L0,120Z"/>
+      <path class="wave2" fill="rgba(12,20,69,0.4)" d="M0,96L48,85.3C96,75,192,53,288,53.3C384,53,480,75,576,80C672,85,768,75,864,64C960,53,1056,43,1152,48C1248,53,1344,75,1392,85.3L1440,96L1440,120L0,120Z"/>
+      <path class="wave3" fill="#0c1445" d="M0,80L48,74.7C96,69,192,59,288,64C384,69,480,91,576,96C672,101,768,91,864,80C960,69,1056,59,1152,64C1248,69,1344,91,1392,101.3L1440,112L1440,120L0,120Z"/>
+    </svg>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-row reveal">
+  <div class="stat-item"><div class="stat-num">120+</div><div class="stat-label">Destinations</div></div>
+  <div class="stat-item"><div class="stat-num">12K+</div><div class="stat-label">Happy Travelers</div></div>
+  <div class="stat-item"><div class="stat-num">4.9★</div><div class="stat-label">Average Rating</div></div>
+  <div class="stat-item"><div class="stat-num">98%</div><div class="stat-label">Satisfaction Rate</div></div>
+  <div class="stat-item"><div class="stat-num">24/7</div><div class="stat-label">Support</div></div>
+</div>
+
+<!-- DESTINATIONS -->
+<section class="section" id="destinations">
+  <div class="section-tag">Top Picks</div>
+  <h2 class="section-title">Trending <em style="font-style:italic;color:var(--sand)">Destinations</em></h2>
+  <p class="section-desc">Handpicked destinations loved by our travelers this season.</p>
+  <div class="dest-grid reveal">
+    <div class="dest-card" onclick="showToast('Bali, Indonesia 🌴','From $899 · 7 nights · Flights included')">
+      <div class="dest-bg d1"></div>
+      <div class="dest-overlay"></div>
+      <div class="dest-tag hot">🔥 HOT</div>
+      <div class="dest-info">
+        <span class="dest-emoji">🌴</span>
+        <div class="dest-name">Bali, Indonesia</div>
+        <div class="dest-sub">Temples · Rice Terraces · Beaches</div>
+        <div class="dest-price">From $899 · 7 nights</div>
+      </div>
+    </div>
+    <div class="dest-card" onclick="showToast('Santorini, Greece 🏛','From $1,299 · 5 nights · Hotels included')">
+      <div class="dest-bg d2"></div>
+      <div class="dest-overlay"></div>
+      <div class="dest-tag">NEW</div>
+      <div class="dest-info">
+        <span class="dest-emoji">🏛</span>
+        <div class="dest-name">Santorini, Greece</div>
+        <div class="dest-sub">Cliffside Views · Local Cuisine</div>
+        <div class="dest-price">From $1,299 · 5 nights</div>
+      </div>
+    </div>
+    <div class="dest-card" onclick="showToast('Safari, Kenya 🦁','From $2,499 · 8 nights · All inclusive')">
+      <div class="dest-bg d3"></div>
+      <div class="dest-overlay"></div>
+      <div class="dest-tag hot">🔥 HOT</div>
+      <div class="dest-info">
+        <span class="dest-emoji">🦁</span>
+        <div class="dest-name">Safari, Kenya</div>
+        <div class="dest-sub">Wildlife · Maasai Mara · Sunsets</div>
+        <div class="dest-price">From $2,499 · 8 nights</div>
+      </div>
+    </div>
+    <div class="dest-card" onclick="showToast('Tokyo, Japan 🗾','From $1,599 · 10 nights · Rail pass included')">
+      <div class="dest-bg d4"></div>
+      <div class="dest-overlay"></div>
+      <div class="dest-tag">POPULAR</div>
+      <div class="dest-info">
+        <span class="dest-emoji">🗾</span>
+        <div class="dest-name">Tokyo, Japan</div>
+        <div class="dest-sub">Culture · Food · Technology</div>
+        <div class="dest-price">From $1,599 · 10 nights</div>
+      </div>
+    </div>
+    <div class="dest-card" onclick="showToast('Maldives 🏝','From $3,299 · 6 nights · Water villa')">
+      <div class="dest-bg d5"></div>
+      <div class="dest-overlay"></div>
+      <div class="dest-tag">LUXURY</div>
+      <div class="dest-info">
+        <span class="dest-emoji">🏝</span>
+        <div class="dest-name">Maldives</div>
+        <div class="dest-sub">Overwater Villas · Crystal Waters</div>
+        <div class="dest-price">From $3,299 · 6 nights</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PACKAGES -->
+<section class="section" id="packages" style="background:rgba(255,255,255,0.02);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+  <div class="section-tag">Our Packages</div>
+  <h2 class="section-title">Choose Your <em style="font-style:italic;color:var(--sand)">Adventure</em></h2>
+  <p class="section-desc">Carefully crafted packages for every type of traveler and budget.</p>
+  <div class="pkg-grid reveal">
+    <div class="pkg-card">
+      <div class="pkg-badge">EXPLORER</div>
+      <div class="pkg-name">Weekend Escape</div>
+      <div class="pkg-days">3 DAYS · 2 NIGHTS</div>
+      <div class="pkg-desc">Perfect for a quick getaway. Visit nearby hidden gems with guided tours and comfortable stays.</div>
+      <ul class="pkg-includes">
+        <li>Return flights included</li>
+        <li>3-star hotel accommodation</li>
+        <li>Daily breakfast</li>
+        <li>Airport transfers</li>
+        <li>1 guided city tour</li>
+      </ul>
+      <div class="pkg-price">$499 <span>/ person</span></div>
+      <button class="pkg-btn outline" onclick="scrollToBooking()">Book Now</button>
+    </div>
+    <div class="pkg-card featured">
+      <div class="pkg-badge">⭐ MOST POPULAR</div>
+      <div class="pkg-name">Dream Vacation</div>
+      <div class="pkg-days">7 DAYS · 6 NIGHTS</div>
+      <div class="pkg-desc">Our bestseller! A perfect week-long immersive experience with everything included.</div>
+      <ul class="pkg-includes">
+        <li>Return flights + luggage</li>
+        <li>4-star hotel with pool</li>
+        <li>All meals included</li>
+        <li>3 guided excursions</li>
+        <li>Travel insurance</li>
+        <li>24/7 concierge support</li>
+      </ul>
+      <div class="pkg-price">$1,299 <span>/ person</span></div>
+      <button class="pkg-btn" onclick="scrollToBooking()">Book Now →</button>
+    </div>
+    <div class="pkg-card">
+      <div class="pkg-badge">LUXURY</div>
+      <div class="pkg-name">Premium Journey</div>
+      <div class="pkg-days">14 DAYS · 13 NIGHTS</div>
+      <div class="pkg-desc">The ultimate luxury travel experience. Private tours, 5-star resorts, and VIP treatment throughout.</div>
+      <ul class="pkg-includes">
+        <li>Business class flights</li>
+        <li>5-star luxury resorts</li>
+        <li>Private chef & butler</li>
+        <li>Private guided tours</li>
+        <li>Spa & wellness access</li>
+        <li>Premium travel insurance</li>
+        <li>Personal travel concierge</li>
+      </ul>
+      <div class="pkg-price">$4,999 <span>/ person</span></div>
+      <button class="pkg-btn outline" onclick="scrollToBooking()">Book Now</button>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCES -->
+<section class="section" id="experiences">
+  <div class="section-tag">What We Offer</div>
+  <h2 class="section-title">Unforgettable <em style="font-style:italic;color:var(--sand)">Experiences</em></h2>
+  <p class="section-desc">Every trip is crafted with attention to detail and passion for authentic travel.</p>
+  <div class="exp-grid reveal">
+    <div class="exp-card"><span class="exp-icon">🏔</span><div class="exp-name">Adventure Treks</div><div class="exp-desc">From Himalayan trails to Patagonia hikes — for the brave souls.</div></div>
+    <div class="exp-card"><span class="exp-icon">🍜</span><div class="exp-name">Food & Culture</div><div class="exp-desc">Street food tours, cooking classes, local markets and festivals.</div></div>
+    <div class="exp-card"><span class="exp-icon">🤿</span><div class="exp-name">Water Adventures</div><div class="exp-desc">Scuba diving, snorkeling, surfing in the world's best waters.</div></div>
+    <div class="exp-card"><span class="exp-icon">🦒</span><div class="exp-name">Wildlife Safari</div><div class="exp-desc">Witness the Big Five and more across Africa's greatest game reserves.</div></div>
+    <div class="exp-card"><span class="exp-icon">🏛</span><div class="exp-name">Cultural Tours</div><div class="exp-desc">UNESCO heritage sites, ancient temples, and living history.</div></div>
+    <div class="exp-card"><span class="exp-icon">💆</span><div class="exp-name">Wellness Retreats</div><div class="exp-desc">Yoga, meditation, and spa in the world's most serene locations.</div></div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="section" style="background:rgba(255,255,255,0.02);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+  <div class="section-tag">Happy Travelers</div>
+  <h2 class="section-title">What They <em style="font-style:italic;color:var(--sand)">Say</em></h2>
+  <div class="testi-grid reveal">
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <div class="testi-text">"TravelFlow made our honeymoon in Bali absolutely magical. Every detail was perfect — from the resort to the private tours. We'll never book with anyone else!"</div>
+      <div class="testi-author"><div class="testi-av av-a">SP</div><div><div class="testi-name">Sneha & Priya</div><div class="testi-role">Honeymooners · Bali Trip</div></div></div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <div class="testi-text">"The Kenya safari was a life-changing experience. Our guide was incredible, and seeing lions at sunset was something I'll never forget. Worth every penny!"</div>
+      <div class="testi-author"><div class="testi-av av-b">RK</div><div><div class="testi-name">Rahul Kumar</div><div class="testi-role">Solo Traveler · Kenya Safari</div></div></div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <div class="testi-text">"Booked the Japan package for our family of 4. The kids loved Tokyo Disneyland, we loved the temples. TravelFlow handled everything perfectly!"</div>
+      <div class="testi-author"><div class="testi-av av-c">AM</div><div><div class="testi-name">Aisha & Mike</div><div class="testi-role">Family Trip · Japan</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- BOOKING FORM -->
+<section class="section" id="booking" style="padding-top:0">
+  <div class="booking-section reveal">
+    <div class="booking-grid">
+      <div>
+        <div class="section-tag">Book Now</div>
+        <h2 class="section-title">Plan Your <em style="font-style:italic;color:var(--sand)">Dream Trip</em></h2>
+        <p style="color:var(--muted);line-height:1.8;margin-bottom:32px">Fill in your details and our travel expert will get back to you within 2 hours with a personalized itinerary.</p>
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <div style="display:flex;gap:12px;align-items:center"><span style="font-size:1.2rem">⚡</span><span style="color:var(--muted);font-size:0.9rem">Response within 2 hours</span></div>
+          <div style="display:flex;gap:12px;align-items:center"><span style="font-size:1.2rem">💳</span><span style="color:var(--muted);font-size:0.9rem">Flexible payment options</span></div>
+          <div style="display:flex;gap:12px;align-items:center"><span style="font-size:1.2rem">🔒</span><span style="color:var(--muted);font-size:0.9rem">Free cancellation up to 30 days</span></div>
+          <div style="display:flex;gap:12px;align-items:center"><span style="font-size:1.2rem">🌟</span><span style="color:var(--muted);font-size:0.9rem">Best price guarantee</span></div>
+        </div>
+      </div>
+      <div>
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">First Name</label><input class="form-input" id="tf-fname" type="text" placeholder="John"></div>
+          <div class="form-group"><label class="form-label">Last Name</label><input class="form-input" id="tf-lname" type="text" placeholder="Doe"></div>
+        </div>
+        <div class="form-group"><label class="form-label">Email Address</label><input class="form-input" id="tf-email" type="email" placeholder="john@email.com"></div>
+        <div class="form-group"><label class="form-label">Phone Number</label><input class="form-input" id="tf-phone" type="tel" placeholder="+91 98765 43210"></div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Destination</label>
+            <select class="form-select" id="tf-dest">
+              <option value="">Select destination</option>
+              <option>Bali, Indonesia</option>
+              <option>Santorini, Greece</option>
+              <option>Safari, Kenya</option>
+              <option>Tokyo, Japan</option>
+              <option>Maldives</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Package</label>
+            <select class="form-select" id="tf-pkg">
+              <option value="">Select package</option>
+              <option>Weekend Escape ($499)</option>
+              <option>Dream Vacation ($1,299)</option>
+              <option>Premium Journey ($4,999)</option>
+              <option>Custom Package</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">Travel Date</label><input class="form-input" id="tf-date" type="date"></div>
+          <div class="form-group">
+            <label class="form-label">Travelers</label>
+            <select class="form-select" id="tf-travelers">
+              <option>1 Adult</option>
+              <option>2 Adults</option>
+              <option>2 Adults + Children</option>
+              <option>Group (5+)</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn-primary" style="width:100%;justify-content:center;font-size:1rem;padding:16px" onclick="submitBooking()">
+          Book My Trip ✈
+        </button>
+        <div id="booking-success" style="display:none;margin-top:16px;background:rgba(249,115,22,0.1);border:1px solid rgba(249,115,22,0.3);border-radius:12px;padding:16px;text-align:center;color:var(--sand)">
+          ✅ Booking received! Our travel expert will contact you within 2 hours.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<div class="newsletter reveal">
+  <div class="section-tag" style="justify-content:center;margin-bottom:20px">Stay Updated</div>
+  <h2 style="font-family:'Playfair Display',serif;font-size:clamp(2rem,4vw,3rem);font-weight:900;margin-bottom:16px;letter-spacing:-0.02em">Get <em>Exclusive</em> Travel Deals</h2>
+  <p style="color:var(--muted);margin-bottom:40px;font-size:1rem;font-weight:300">Join 50,000+ travelers who get our best deals first. Unsubscribe anytime.</p>
+  <div class="nl-input-wrap">
+    <input class="nl-input" type="email" id="nl-email" placeholder="your@email.com">
+    <button class="btn-primary" style="white-space:nowrap" onclick="subscribeNL()">Subscribe ✈</button>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="nav-logo" style="font-size:1.4rem">Travel<span style="color:var(--coral)">Flow</span></div>
+      <p>Your trusted travel partner for extraordinary journeys around the world since 2019.</p>
+    </div>
+    <div class="footer-col"><h4>Destinations</h4><ul class="footer-links"><li><a href="#">Bali</a></li><li><a href="#">Santorini</a></li><li><a href="#">Kenya</a></li><li><a href="#">Japan</a></li><li><a href="#">Maldives</a></li></ul></div>
+    <div class="footer-col"><h4>Packages</h4><ul class="footer-links"><li><a href="#">Weekend Escape</a></li><li><a href="#">Dream Vacation</a></li><li><a href="#">Premium Journey</a></li><li><a href="#">Custom Trips</a></li></ul></div>
+    <div class="footer-col"><h4>Company</h4><ul class="footer-links"><li><a href="#">About Us</a></li><li><a href="#">Contact</a></li><li><a href="#">Blog</a></li><li><a href="#">Careers</a></li></ul></div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 TravelFlow Agency. All rights reserved.</p>
+    <p style="font-family:'Space Mono',monospace;font-size:0.72rem;color:var(--muted)">Built with ❤️ by PixelForge Studio</p>
+  </div>
+</footer>
+
+<script>
+// CURSOR
+const cur = document.getElementById('cur');
+const ring = document.getElementById('cur-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
+(function tick(){
+  cur.style.transform=`translate(${mx-5}px,${my-5}px)`;
+  rx+=(mx-rx)*0.12; ry+=(my-ry)*0.12;
+  ring.style.transform=`translate(${rx-18}px,${ry-18}px)`;
+  requestAnimationFrame(tick);
+})();
+
+// SCROLL
+window.addEventListener('scroll',()=>{
+  const h=document.documentElement.scrollHeight-window.innerHeight;
+  document.getElementById('scroll-bar').style.width=(window.scrollY/h*100)+'%';
+  document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>50);
+});
+
+// REVEAL
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')});
+},{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+// TOAST
+function showToast(title,msg){
+  document.getElementById('toast').querySelector('.toast-title').textContent=title;
+  document.getElementById('toast').querySelector('.toast-msg').textContent=msg;
+  document.getElementById('toast').classList.add('show');
+  setTimeout(()=>document.getElementById('toast').classList.remove('show'),4000);
+}
+
+// SCROLL TO BOOKING
+function scrollToBooking(){
+  document.getElementById('booking').scrollIntoView({behavior:'smooth'});
+}
+
+// BOOKING SUBMIT
+function submitBooking(){
+  const fname=document.getElementById('tf-fname').value.trim();
+  const email=document.getElementById('tf-email').value.trim();
+  const dest=document.getElementById('tf-dest').value;
+  if(!fname){showToast('⚠️ Name Missing','Please enter your name.');return;}
+  if(!email||!email.includes('@')){showToast('⚠️ Invalid Email','Please enter a valid email.');return;}
+  if(!dest){showToast('⚠️ Select Destination','Please choose your destination.');return;}
+  const btn=event.target;
+  btn.textContent='Booking...';btn.disabled=true;
+  setTimeout(()=>{
+    btn.textContent='Booked! ✓';
+    btn.style.background='#10b981';
+    document.getElementById('booking-success').style.display='block';
+    showToast('Booking Confirmed! ✈','We\'ll contact you within 2 hours!');
+  },1500);
+}
+
+// NEWSLETTER
+function subscribeNL(){
+  const email=document.getElementById('nl-email').value.trim();
+  if(!email||!email.includes('@')){showToast('⚠️ Invalid Email','Enter a valid email to subscribe.');return;}
+  showToast('Subscribed! 💌','Welcome! Exclusive deals incoming.');
+  document.getElementById('nl-email').value='';
+}
+</script>
+</body>
+</html>
