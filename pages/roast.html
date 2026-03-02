@@ -266,7 +266,22 @@
   .loc-city { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; color: var(--white); margin-bottom: 8px; }
   .loc-addr { color: var(--muted); font-size: 0.9rem; line-height: 1.7; }
   .loc-hours { font-family: 'Space Mono', monospace; font-size: 0.7rem; color: var(--gold); margin-top: 16px; letter-spacing: 0.05em; }
+/*back button*/
 
+.back-btn {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #7a6a55;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 32px;
+  transition: color 0.3s;
+}
+.back-btn:hover { color: #c9933a; }
   /* CTA */
   .cta-section {
     text-align: center; padding: 120px 60px;
@@ -375,6 +390,7 @@
     <div class="hero-btns">
       <a href="#menu" class="btn-primary">Explore Menu</a>
       <a href="#about" class="btn-outline">Our Story</a>
+     <a href="work.html" class="back-btn">← Back to Portfolio</a>
     </div>
   </div>
   <div class="hero-visual">
