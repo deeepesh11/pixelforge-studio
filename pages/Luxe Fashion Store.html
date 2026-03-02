@@ -183,7 +183,21 @@
     .footer-col a:hover { color: var(--white); }
     .footer-bottom { border-top: 1px solid rgba(255,255,255,0.08); padding-top: 32px; display: flex; justify-content: space-between; align-items: center; }
     .footer-bottom p { font-size: 11px; color: rgba(255,255,255,0.25); }
-
+ /* back button*/
+.back-btn {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #9a8470;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 32px;
+  transition: color 0.3s;
+}
+.back-btn:hover { color: #a6782a; }
     /* ===================== CART SIDEBAR ===================== */
     .cart-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 200; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
     .cart-overlay.open { opacity: 1; pointer-events: all; }
