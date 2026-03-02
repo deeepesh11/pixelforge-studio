@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BeautyCo — Luxury Skincare</title>
+<link href="https://fonts.googleapis.com/css2?family=Didact+Gothic&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;0,6..96,900;1,6..96,400;1,6..96,700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #faf7f2;
+    --bg2: #f2ece0;
+    --bg3: #e9e0d0;
+    --gold: #a6782a;
+    --gold2: #c99a3e;
+    --gold3: #7a5518;
+    --white: #1a1208;
+    --muted: #9a8470;
+    --text: #4a3c2a;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Didact Gothic', sans-serif;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  #cursor {
+    position: fixed; width: 8px; height: 8px;
+    background: var(--gold); border-radius: 50%;
+    pointer-events: none; z-index: 9999;
+    transform: translate(-50%, -50%);
+  }
+  #cursor-ring {
+    position: fixed; width: 32px; height: 32px;
+    border: 1px solid rgba(201,168,76,0.6); border-radius: 50%;
+    pointer-events: none; z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: all 0.1s ease;
+  }
+
+  /* Grain */
+  body::after {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 1000; mix-blend-mode: multiply;
+  }
+
+  /* Nav */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 28px 80px;
+    transition: background 0.4s, padding 0.4s;
+  }
+  nav.scrolled { background: rgba(250,247,242,0.96) !important; border-bottom: 1px solid rgba(166,120,42,0.15); /* override */ } .nav-scrolled-dummy {
+    background: rgba(250,247,242,0.97);
+    border-bottom: 1px solid rgba(201,168,76,0.12);
+    padding: 18px 80px;
+    backdrop-filter: blur(10px); color: var(--white);
+  }
+  .logo { color: var(--white) !important; } .logo-fix {
+    font-family: 'Bodoni Moda', serif; font-size: 1.4rem;
+    font-weight: 900; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--white); text-decoration: none;
+  }
+  .logo span { color: var(--gold); }
+  .nav-links { display: flex; gap: 40px; list-style: none; }
+  .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase; font-family: 'Space Mono', monospace; transition: color 0.3s; }
+  .nav-links a:hover { color: var(--gold); }
+  .nav-cta {
+    background: var(--gold); color: var(--bg);
+    padding: 10px 28px; font-family: 'Space Mono', monospace;
+    font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase;
+    border: none; cursor: none; transition: all 0.3s; text-decoration: none;
+    display: inline-block;
+  }
+  .nav-cta:hover { background: var(--gold2); }
+
+  /* Hero */
+  .hero {
+    min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr;
+    position: relative; overflow: hidden;
+  }
+  .hero-left {
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 160px 80px 100px;
+    background: var(--bg);
+    position: relative; z-index: 2;
+  }
+  .hero-right {
+    position: relative; overflow: hidden;
+    background: linear-gradient(135deg, #f0e8d8, #f8f2e8, #ede0cc);
+  }
+  .hero-right::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse at 30% 30%, rgba(201,168,76,0.2) 0%, transparent 50%),
+      radial-gradient(ellipse at 70% 70%, rgba(201,168,76,0.1) 0%, transparent 40%);
+  }
+  .hero-product {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    animation: float 7s ease-in-out infinite;
+  }
+  .product-jar {
+    width: 200px; height: 240px;
+    background: linear-gradient(160deg, rgba(201,168,76,0.4), rgba(201,168,76,0.1));
+    border: 1px solid rgba(201,168,76,0.4);
+    border-radius: 12px 12px 20px 20px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 4rem;
+    box-shadow: 0 40px 80px rgba(0,0,0,0.5), 0 0 60px rgba(201,168,76,0.1);
+    position: relative; margin: 0 auto;
+  }
+  .product-jar::before {
+    content: ''; position: absolute; top: -16px; left: 20%; right: 20%; height: 16px;
+    background: linear-gradient(to top, rgba(201,168,76,0.5), rgba(201,168,76,0.2));
+    border-radius: 6px 6px 0 0;
+    border: 1px solid rgba(201,168,76,0.4); border-bottom: none;
+  }
+  .product-label {
+    margin-top: 24px; font-family: 'Bodoni Moda', serif;
+    font-size: 0.85rem; letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--gold3);
+  }
+  @keyframes float { 0%,100%{transform:translate(-50%,-50%) translateY(0)} 50%{transform:translate(-50%,-50%) translateY(-16px)} }
+
+  .hero-tag {
+    font-family: 'Space Mono', monospace; font-size: 0.68rem;
+    letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold);
+    margin-bottom: 28px; display: flex; align-items: center; gap: 14px;
+  }
+  .hero-tag::before { content: ''; width: 30px; height: 1px; background: var(--gold); }
+  .hero h1 {
+    font-family: 'Bodoni Moda', serif;
+    font-size: clamp(3rem, 5vw, 5rem);
+    font-weight: 900; line-height: 1.05;
+    color: var(--white); margin-bottom: 24px;
+  }
+  .hero h1 em { font-style: italic; color: var(--gold); display: block; }
+  .hero p {
+    color: var(--muted); font-size: 1rem; line-height: 1.9;
+    max-width: 400px; margin-bottom: 48px;
+  }
+  .hero-btns { display: flex; gap: 16px; flex-wrap: wrap; }
+  .btn-gold {
+    background: var(--gold); color: var(--bg);
+    padding: 16px 40px; font-family: 'Space Mono', monospace;
+    font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase;
+    border: none; cursor: none; transition: all 0.3s; text-decoration: none;
+    display: inline-block;
+  }
+  .btn-gold:hover { background: var(--gold2); }
+  .btn-border {
+    background: transparent; border: 1px solid rgba(201,168,76,0.4); color: var(--gold3);
+    padding: 16px 40px; font-family: 'Space Mono', monospace;
+    font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase;
+    cursor: none; transition: all 0.3s; text-decoration: none; display: inline-block;
+  }
+  .btn-border:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* Divider */
+  .gold-divider {
+    display: flex; align-items: center; gap: 20px; padding: 30px 80px;
+    background: var(--bg2); border-top: 1px solid rgba(201,168,76,0.1);
+    border-bottom: 1px solid rgba(201,168,76,0.1);
+    overflow: hidden;
+  }
+  .gd-track {
+    display: flex; gap: 60px; white-space: nowrap;
+    animation: marquee 18s linear infinite; flex-shrink: 0;
+  }
+  .gd-item {
+    font-family: 'Bodoni Moda', serif; font-style: italic;
+    font-size: 1rem; color: var(--muted);
+    display: flex; align-items: center; gap: 20px;
+  }
+  .gd-item::after { content: '◆'; color: var(--gold); font-style: normal; font-size: 0.5rem; }
+  @keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+  /* Sections */
+  section { padding: 120px 80px; }
+  .section-label {
+    font-family: 'Space Mono', monospace; font-size: 0.65rem;
+    letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold);
+    margin-bottom: 16px; display: flex; align-items: center; gap: 12px;
+  }
+  .section-label::before { content: ''; width: 28px; height: 1px; background: var(--gold); }
+  h2 {
+    font-family: 'Bodoni Moda', serif;
+    font-size: clamp(2rem, 3.5vw, 3rem); font-weight: 900;
+    color: var(--white); line-height: 1.1; margin-bottom: 16px;
+  }
+  h2 em { font-style: italic; color: var(--gold); }
+
+  /* Products */
+  .products-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 60px; }
+  .product-card {
+    background: var(--bg3); padding: 48px 36px;
+    position: relative; overflow: hidden; transition: background 0.4s;
+    cursor: none;
+  }
+  .product-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+    transform: scaleX(0); transition: transform 0.5s; transform-origin: center;
+  }
+  .product-card:hover::before { transform: scaleX(1); }
+  .product-card:hover { background: rgba(201,168,76,0.05); }
+  .prod-icon { font-size: 3rem; margin-bottom: 24px; display: block; }
+  .prod-cat { font-family: 'Space Mono', monospace; font-size: 0.6rem; letter-spacing: 0.2em; color: var(--gold); text-transform: uppercase; margin-bottom: 12px; }
+  .prod-name { font-family: 'Bodoni Moda', serif; font-size: 1.5rem; font-weight: 700; color: var(--white); margin-bottom: 12px; }
+  .prod-desc { color: var(--muted); font-size: 0.9rem; line-height: 1.8; margin-bottom: 28px; }
+  .prod-price { font-family: 'Space Mono', monospace; color: var(--gold); font-size: 1rem; }
+  .prod-price span { font-size: 0.7rem; color: var(--muted); }
+
+  /* Ritual / How to use */
+  .ritual-section { background: var(--bg2); }
+  .ritual-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; margin-top: 60px; }
+  .ritual-steps { display: flex; flex-direction: column; gap: 40px; }
+  .ritual-step { display: flex; gap: 28px; align-items: flex-start; }
+  .step-circle {
+    width: 48px; height: 48px; border-radius: 50%;
+    border: 1px solid rgba(201,168,76,0.3);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    font-family: 'Bodoni Moda', serif; font-size: 1.1rem; color: var(--gold);
+  }
+  .step-content h4 { font-family: 'Bodoni Moda', serif; font-size: 1.2rem; color: var(--white); margin-bottom: 8px; }
+  .step-content p { color: var(--muted); font-size: 0.9rem; line-height: 1.8; }
+  .ritual-visual {
+    height: 500px; background: linear-gradient(145deg, #f0e8d8, #e8dcc8);
+    border: 1px solid rgba(201,168,76,0.15);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 6rem; position: relative; overflow: hidden;
+  }
+  .ritual-visual::after {
+    content: 'THE RITUAL';
+    position: absolute; bottom: 24px; right: 0; left: 0; text-align: center;
+    font-family: 'Space Mono', monospace; font-size: 0.65rem; letter-spacing: 0.3em;
+    color: rgba(201,168,76,0.4);
+  }
+
+  /* Ingredients */
+  .ingr-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; margin-top: 60px; }
+  .ingr-card {
+    text-align: center; padding: 40px 24px;
+    border: 1px solid rgba(201,168,76,0.1); transition: border-color 0.3s;
+  }
+  .ingr-card:hover { border-color: rgba(201,168,76,0.4); }
+  .ingr-icon { font-size: 2.5rem; margin-bottom: 16px; }
+  .ingr-name { font-family: 'Bodoni Moda', serif; font-size: 1.1rem; color: var(--white); margin-bottom: 8px; }
+  .ingr-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.7; }
+
+  /* Testimonials */
+  .test-section { background: var(--bg2); }
+  .test-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 60px; }
+  .test-card {
+    padding: 40px 32px; border: 1px solid rgba(201,168,76,0.1);
+    position: relative; background: var(--bg3);
+  }
+  .test-quote { position: absolute; top: 20px; right: 24px; font-family: 'Bodoni Moda', serif; font-size: 4rem; color: rgba(201,168,76,0.12); line-height: 1; }
+  .stars { color: var(--gold); font-size: 0.8rem; letter-spacing: 4px; margin-bottom: 16px; }
+  .test-text { font-style: italic; font-size: 1rem; line-height: 1.9; color: var(--cream); margin-bottom: 24px; color: var(--text); }
+  .test-author { font-family: 'Space Mono', monospace; font-size: 0.65rem; letter-spacing: 0.12em; color: var(--gold); text-transform: uppercase; }
+
+  /* Try-on banner */
+  .tryon-banner {
+    display: grid; grid-template-columns: 1fr 1fr;
+    min-height: 400px; margin: 0;
+  }
+  .tryon-left {
+    background: var(--gold); display: flex; flex-direction: column;
+    justify-content: center; padding: 80px;
+  }
+  .tryon-left h3 { font-family: 'Bodoni Moda', serif; font-size: 2.5rem; font-weight: 900; color: var(--bg); line-height: 1.1; margin-bottom: 16px; }
+  .tryon-left p { color: rgba(6,5,4,0.7); font-size: 1rem; line-height: 1.8; margin-bottom: 32px; }
+  .btn-dark {
+    background: var(--white); color: var(--gold);
+    padding: 16px 36px; font-family: 'Space Mono', monospace;
+    font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase;
+    border: none; cursor: none; transition: all 0.3s; text-decoration: none;
+    display: inline-block; width: fit-content;
+  }
+  .btn-dark:hover { background: var(--bg3); }
+  .tryon-right {
+    background: linear-gradient(145deg, #f0e8d8, #e8dcc8);
+    display: flex; align-items: center; justify-content: center; font-size: 7rem;
+    border: 1px solid rgba(201,168,76,0.15);
+  }
+
+  /* CTA */
+  .cta-section {
+    text-align: center; padding: 140px 80px;
+    background:
+      radial-gradient(ellipse at center, rgba(201,168,76,0.12) 0%, transparent 60%),
+      var(--bg);
+    border-top: 1px solid rgba(201,168,76,0.1);
+  }
+  .cta-section h2 { font-size: clamp(2.5rem, 5vw, 4rem); margin-bottom: 20px; }
+  .cta-section p { color: var(--muted); font-size: 1.05rem; max-width: 480px; margin: 0 auto 40px; line-height: 1.9; }
+
+  /* Footer */
+  footer {
+    background: var(--bg2); border-top: 1px solid rgba(201,168,76,0.1);
+    padding: 60px 80px; display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 24px;
+  }
+  footer p { color: var(--muted); font-size: 0.8rem; }
+  .footer-links { display: flex; gap: 32px; }
+  .footer-links a { color: var(--muted); text-decoration: none; font-size: 0.75rem; font-family: 'Space Mono', monospace; letter-spacing: 0.1em; transition: color 0.3s; }
+  .footer-links a:hover { color: var(--gold); }
+
+  /* Animations */
+  .fade-up { opacity: 0; transform: translateY(36px); transition: opacity 0.9s ease, transform 0.9s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+
+  /* Hamburger */
+  .hamburger {
+    display: none; flex-direction: column; gap: 5px; cursor: none; padding: 4px; z-index: 600;
+  }
+  .hamburger span {
+    display: block; width: 24px; height: 2px;
+    background: var(--gold); transition: all 0.3s;
+  }
+  .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  /* Mobile Menu */
+  .mobile-menu {
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(250,247,242,0.99); z-index: 550;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 36px; transform: translateX(100%); transition: transform 0.4s ease;
+  }
+  .mobile-menu.open { transform: translateX(0); }
+  .mobile-menu a {
+    font-family: 'Bodoni Moda', serif; font-size: 2rem; font-weight: 700;
+    color: var(--white); text-decoration: none; letter-spacing: 0.05em;
+    transition: color 0.3s;
+  }
+  .mobile-menu a:hover { color: var(--gold); }
+  .mobile-menu .mob-cta {
+    background: var(--gold); color: var(--bg);
+    padding: 14px 40px; font-family: 'Space Mono', monospace;
+    font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase;
+    margin-top: 16px; border-radius: 0;
+  }
+
+  @media(max-width:900px) {
+    nav { padding: 20px 24px; }
+    .nav-links, .nav-cta { display: none; }
+    .hamburger { display: flex; }
+    .hero { grid-template-columns: 1fr; }
+    .hero-right { display: none; }
+    .hero-left { padding: 140px 24px 80px; }
+    section { padding: 80px 24px; }
+    .products-grid { grid-template-columns: 1fr; }
+    .ritual-grid, .tryon-banner { grid-template-columns: 1fr; }
+    .ingr-grid { grid-template-columns: repeat(2,1fr); }
+    .test-grid { grid-template-columns: 1fr; }
+    .tryon-left { padding: 48px 24px; }
+    .tryon-right { min-height: 200px; }
+    .gold-divider { padding: 24px; }
+    .cta-section { padding: 80px 24px; }
+    footer { padding: 40px 24px; flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<div class="mobile-menu" id="mobile-menu">
+  <a href="#products" onclick="closeMob()">Products</a>
+  <a href="#ritual" onclick="closeMob()">The Ritual</a>
+  <a href="#ingredients" onclick="closeMob()">Ingredients</a>
+  <a href="#reviews" onclick="closeMob()">Reviews</a>
+  <a href="#products" class="mob-cta" onclick="closeMob()">Shop Now</a>
+</div>
+<nav id="navbar">
+  <a class="logo" href="#">BEAUTY<span>CO</span></a>
+  <ul class="nav-links">
+    <li><a href="#products">Products</a></li>
+    <li><a href="#ritual">The Ritual</a></li>
+    <li><a href="#ingredients">Ingredients</a></li>
+    <li><a href="#reviews">Reviews</a></li>
+  </ul>
+  <a class="nav-cta" href="#products">Shop Now</a>
+  <div class="hamburger" id="hamburger" onclick="toggleMob()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-left">
+    <div class="hero-tag">Luxury Skincare · Est. 2018</div>
+    <h1>Skin That <em>Glows</em> With Gold.</h1>
+    <p>Formulated with 24k gold, rare botanicals, and cutting-edge biotech. BeautyCo is the skincare ritual you deserve.</p>
+    <div class="hero-btns">
+      <a href="#products" class="btn-gold">Shop Collection</a>
+      <a href="#ritual" class="btn-border">The Ritual</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-product">
+      <div class="product-jar">✨</div>
+      <div class="product-label">Gold Elixir Serum</div>
+    </div>
+  </div>
+</div>
+
+<!-- Divider Marquee -->
+<div class="gold-divider">
+  <div class="gd-track">
+    <span class="gd-item">24K Gold Infused</span>
+    <span class="gd-item">Cruelty Free</span>
+    <span class="gd-item">Dermatologist Tested</span>
+    <span class="gd-item">Vegan Formula</span>
+    <span class="gd-item">Clinically Proven</span>
+    <span class="gd-item">Award Winning</span>
+    <span class="gd-item">24K Gold Infused</span>
+    <span class="gd-item">Cruelty Free</span>
+    <span class="gd-item">Dermatologist Tested</span>
+    <span class="gd-item">Vegan Formula</span>
+    <span class="gd-item">Clinically Proven</span>
+    <span class="gd-item">Award Winning</span>
+  </div>
+</div>
+
+<!-- Products -->
+<section id="products">
+  <div class="section-label">The Collection</div>
+  <h2>Luxury Formulas for <em>Radiant</em> Skin</h2>
+  <div class="products-grid">
+    <div class="product-card fade-up">
+      <span class="prod-icon">✨</span>
+      <div class="prod-cat">Bestseller</div>
+      <div class="prod-name">Gold Elixir Serum</div>
+      <div class="prod-desc">Our hero product. 24k gold particles, hyaluronic acid, and retinol work in harmony to visibly reduce fine lines in 7 days.</div>
+      <div class="prod-price">$148 <span>/ 30ml</span></div>
+    </div>
+    <div class="product-card fade-up">
+      <span class="prod-icon">🌙</span>
+      <div class="prod-cat">Night Care</div>
+      <div class="prod-name">Midnight Repair Cream</div>
+      <div class="prod-desc">A rich, velvety night cream with ceramides and peptides. Wake up to visibly plumper, softer skin every morning.</div>
+      <div class="prod-price">$118 <span>/ 50ml</span></div>
+    </div>
+    <div class="product-card fade-up">
+      <span class="prod-icon">💧</span>
+      <div class="prod-cat">Hydration</div>
+      <div class="prod-name">Dewy Essence Toner</div>
+      <div class="prod-desc">Seven layers of hydration in one bottle. Niacinamide, rose water, and hyaluronic acid for glass-skin results.</div>
+      <div class="prod-price">$68 <span>/ 150ml</span></div>
+    </div>
+    <div class="product-card fade-up">
+      <span class="prod-icon">☀️</span>
+      <div class="prod-cat">Sun Protection</div>
+      <div class="prod-name">Lumière SPF 50 Shield</div>
+      <div class="prod-desc">Invisible, weightless SPF 50 protection with a luminous finish. Zero white cast. Perfect under makeup.</div>
+      <div class="prod-price">$78 <span>/ 40ml</span></div>
+    </div>
+    <div class="product-card fade-up">
+      <span class="prod-icon">👁️</span>
+      <div class="prod-cat">Eye Care</div>
+      <div class="prod-name">Golden Eye Contour</div>
+      <div class="prod-desc">24k gold-infused eye cream that depuffs, brightens, and firms the delicate under-eye area in 14 days.</div>
+      <div class="prod-price">$98 <span>/ 15ml</span></div>
+    </div>
+    <div class="product-card fade-up">
+      <span class="prod-icon">🎁</span>
+      <div class="prod-cat">Best Value</div>
+      <div class="prod-name">The Ritual Set</div>
+      <div class="prod-desc">Our complete 5-step routine, gift-boxed in 24k gold packaging. The ultimate luxury skincare experience.</div>
+      <div class="prod-price">$398 <span>/ set of 5</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- Ritual -->
+<section id="ritual" class="ritual-section">
+  <div class="section-label">How to Use</div>
+  <h2>The <em>Ritual</em></h2>
+  <div class="ritual-grid">
+    <div class="ritual-steps">
+      <div class="ritual-step fade-up">
+        <div class="step-circle">I</div>
+        <div class="step-content">
+          <h4>Cleanse</h4>
+          <p>Begin with a gentle cleanse. Remove the day's impurities and prepare your skin to receive the full benefits of what follows.</p>
+        </div>
+      </div>
+      <div class="ritual-step fade-up">
+        <div class="step-circle">II</div>
+        <div class="step-content">
+          <h4>Tone with Essence</h4>
+          <p>Press the Dewy Essence gently into skin with your palms. This primes the skin and boosts absorption of the serum.</p>
+        </div>
+      </div>
+      <div class="ritual-step fade-up">
+        <div class="step-circle">III</div>
+        <div class="step-content">
+          <h4>Apply Gold Elixir</h4>
+          <p>3–4 drops of the Gold Elixir Serum, warmed between your palms, then pressed gently across the face and neck.</p>
+        </div>
+      </div>
+      <div class="ritual-step fade-up">
+        <div class="step-circle">IV</div>
+        <div class="step-content">
+          <h4>Seal & Protect</h4>
+          <p>Finish with Lumière SPF in the morning, or Midnight Repair Cream in the evening. Seal in all the goodness.</p>
+        </div>
+      </div>
+    </div>
+    <div class="ritual-visual fade-up">✨</div>
+  </div>
+</section>
+
+<!-- Ingredients -->
+<section id="ingredients">
+  <div class="section-label">What's Inside</div>
+  <h2>Rare <em>Ingredients,</em> Real Results</h2>
+  <div class="ingr-grid">
+    <div class="ingr-card fade-up">
+      <div class="ingr-icon">🌿</div>
+      <div class="ingr-name">Bakuchiol</div>
+      <div class="ingr-desc">Nature's retinol alternative. Anti-aging without irritation.</div>
+    </div>
+    <div class="ingr-card fade-up">
+      <div class="ingr-icon">💛</div>
+      <div class="ingr-name">24K Gold</div>
+      <div class="ingr-desc">Stimulates cellular renewal and delivers a natural radiance boost.</div>
+    </div>
+    <div class="ingr-card fade-up">
+      <div class="ingr-icon">🫧</div>
+      <div class="ingr-name">Hyaluronic Acid</div>
+      <div class="ingr-desc">Holds 1000x its weight in water for all-day plump hydration.</div>
+    </div>
+    <div class="ingr-card fade-up">
+      <div class="ingr-icon">🌸</div>
+      <div class="ingr-name">Damask Rose</div>
+      <div class="ingr-desc">Soothing, brightening, and deeply nourishing for sensitive skin.</div>
+    </div>
+  </div>
+</section>
+
+<!-- Testimonials -->
+<section id="reviews" class="test-section">
+  <div class="section-label">Real Results</div>
+  <h2>Loved by <em>Thousands</em></h2>
+  <div class="test-grid">
+    <div class="test-card fade-up">
+      <div class="test-quote">"</div>
+      <div class="stars">★★★★★</div>
+      <div class="test-text">I've tried every luxury serum on the market. The Gold Elixir is the only one that actually delivered on its promises. My skin at 45 looks better than it did at 35.</div>
+      <div class="test-author">Isabelle M. — Paris</div>
+    </div>
+    <div class="test-card fade-up">
+      <div class="test-quote">"</div>
+      <div class="stars">★★★★★</div>
+      <div class="test-text">The packaging alone is worth it, but the results make it genuinely priceless. The Midnight Repair Cream transformed my skin texture within two weeks.</div>
+      <div class="test-author">Aisha K. — Dubai</div>
+    </div>
+    <div class="test-card fade-up">
+      <div class="test-quote">"</div>
+      <div class="stars">★★★★★</div>
+      <div class="test-text">As a dermatologist, I'm skeptical of luxury brands. BeautyCo's formulations are genuinely impressive. I recommend the Ritual Set to all my patients.</div>
+      <div class="test-author">Dr. Sarah Chen — New York</div>
+    </div>
+  </div>
+</section>
+
+<!-- Virtual Try-On -->
+<div class="tryon-banner">
+  <div class="tryon-left">
+    <h3>Try Before You Buy.</h3>
+    <p>Our virtual skin analysis tool recommends the perfect BeautyCo routine for your unique skin type, tone, and concerns.</p>
+    <a href="#" class="btn-dark">Take the Skin Quiz →</a>
+  </div>
+  <div class="tryon-right">💄</div>
+</div>
+
+<!-- CTA -->
+<div class="cta-section">
+  <div class="section-label" style="justify-content:center">Begin Today</div>
+  <h2>Your Skin <em>Deserves</em> the Best.</h2>
+  <p>Free shipping on orders over $100. Complimentary samples with every order. 30-day satisfaction guarantee.</p>
+  <a href="#products" class="btn-gold">Shop the Collection →</a>
+</div>
+
+<!-- Footer -->
+<footer>
+  <a class="logo" href="#">BEAUTY<span>CO</span></a>
+  <p>© 2026 BeautyCo Skincare. All rights reserved.</p>
+  <div class="footer-links">
+    <a href="#">Privacy</a>
+    <a href="#">Terms</a>
+    <a href="#">Contact</a>
+  </div>
+</footer>
+
+<script>
+  // Mobile menu
+  function toggleMob() {
+    document.getElementById('mobile-menu').classList.toggle('open');
+    document.getElementById('hamburger').classList.toggle('open');
+    document.body.style.overflow = document.getElementById('mobile-menu').classList.contains('open') ? 'hidden' : '';
+  }
+  function closeMob() {
+    document.getElementById('mobile-menu').classList.remove('open');
+    document.getElementById('hamburger').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursor-ring');
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+    setTimeout(() => {
+      ring.style.left = e.clientX + 'px';
+      ring.style.top = e.clientY + 'px';
+    }, 60);
+  });
+
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
+  });
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

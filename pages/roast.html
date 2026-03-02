@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roast Coffee Co. — Artisan Coffee</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #0a0705;
+    --bg2: #110e0a;
+    --bg3: #1a1410;
+    --cream: #e8d5b0;
+    --gold: #c9933a;
+    --gold2: #e8b84b;
+    --brown: #6b3d1e;
+    --muted: #7a6a55;
+    --text: #d4c4a8;
+    --white: #f5ede0;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom Cursor */
+  #cursor {
+    position: fixed; width: 10px; height: 10px;
+    background: var(--gold); border-radius: 50%;
+    pointer-events: none; z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: width 0.2s, height 0.2s, background 0.2s;
+  }
+  #cursor-ring {
+    position: fixed; width: 36px; height: 36px;
+    border: 1.5px solid rgba(201,147,58,0.5); border-radius: 50%;
+    pointer-events: none; z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: all 0.12s ease;
+  }
+  body:hover #cursor { opacity: 1; }
+
+  /* Grain overlay */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 1000; opacity: 0.4;
+  }
+
+  /* Nav */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 24px 60px;
+    background: linear-gradient(to bottom, rgba(10,7,5,0.95), transparent);
+    transition: background 0.3s;
+  }
+  nav.scrolled { background: rgba(10,7,5,0.97); border-bottom: 1px solid rgba(201,147,58,0.1); }
+  .logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem; font-weight: 900; letter-spacing: 0.1em;
+    color: var(--cream); text-decoration: none;
+  }
+  .logo span { color: var(--gold); }
+  .nav-links { display: flex; gap: 36px; list-style: none; }
+  .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase; font-family: 'Space Mono', monospace; transition: color 0.3s; }
+  .nav-links a:hover { color: var(--gold); }
+  .nav-cta {
+    background: transparent; border: 1px solid var(--gold);
+    color: var(--gold); padding: 10px 24px; font-family: 'Space Mono', monospace;
+    font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase;
+    cursor: none; transition: all 0.3s;
+  }
+  .nav-cta:hover { background: var(--gold); color: var(--bg); }
+
+  /* Hero */
+  .hero {
+    min-height: 100vh; display: flex; align-items: center;
+    position: relative; overflow: hidden; padding: 0 60px;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 70% 50%, rgba(107,61,30,0.3) 0%, transparent 60%),
+                radial-gradient(ellipse at 20% 80%, rgba(201,147,58,0.1) 0%, transparent 50%),
+                var(--bg);
+  }
+  .hero-content { position: relative; z-index: 2; max-width: 700px; }
+  .hero-tag {
+    font-family: 'Space Mono', monospace; font-size: 0.7rem;
+    letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold);
+    margin-bottom: 32px; display: flex; align-items: center; gap: 16px;
+  }
+  .hero-tag::before { content: ''; width: 40px; height: 1px; background: var(--gold); }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3.5rem, 7vw, 6rem);
+    font-weight: 900; line-height: 1.0;
+    color: var(--white);
+    margin-bottom: 28px;
+  }
+  .hero h1 em { font-style: italic; color: var(--gold); }
+  .hero p {
+    font-size: 1.2rem; line-height: 1.8; color: var(--muted);
+    max-width: 480px; margin-bottom: 48px;
+    font-weight: 300;
+  }
+  .hero-btns { display: flex; gap: 20px; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--gold); color: var(--bg);
+    padding: 16px 40px; font-family: 'Space Mono', monospace;
+    font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase;
+    border: none; cursor: none; transition: all 0.3s; text-decoration: none;
+    display: inline-block;
+  }
+  .btn-primary:hover { background: var(--gold2); transform: translateY(-2px); }
+  .btn-outline {
+    background: transparent; border: 1px solid var(--muted); color: var(--cream);
+    padding: 16px 40px; font-family: 'Space Mono', monospace;
+    font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase;
+    cursor: none; transition: all 0.3s; text-decoration: none; display: inline-block;
+  }
+  .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+
+  .hero-visual {
+    position: absolute; right: 60px; top: 50%;
+    transform: translateY(-50%);
+    width: 420px; height: 420px;
+  }
+  .coffee-circle {
+    width: 100%; height: 100%; border-radius: 50%;
+    background: radial-gradient(circle at 40% 35%, #3d2010, #1a0d05);
+    border: 1px solid rgba(201,147,58,0.2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 8rem; position: relative;
+    animation: float 6s ease-in-out infinite;
+    box-shadow: 0 0 80px rgba(107,61,30,0.4), inset 0 0 60px rgba(0,0,0,0.5);
+  }
+  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-20px)} }
+  .ring-outer {
+    position: absolute; inset: -30px;
+    border: 1px solid rgba(201,147,58,0.15); border-radius: 50%;
+    animation: rotate 20s linear infinite;
+  }
+  .ring-dot {
+    position: absolute; top: 50%; left: -5px;
+    width: 10px; height: 10px; background: var(--gold);
+    border-radius: 50%; margin-top: -5px;
+  }
+  @keyframes rotate { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+
+  /* Marquee */
+  .marquee-wrap {
+    overflow: hidden; border-top: 1px solid rgba(201,147,58,0.15);
+    border-bottom: 1px solid rgba(201,147,58,0.15);
+    background: var(--bg2); padding: 18px 0;
+  }
+  .marquee-track {
+    display: flex; gap: 60px; white-space: nowrap;
+    animation: marquee 20s linear infinite;
+  }
+  .marquee-item {
+    font-family: 'Playfair Display', serif; font-style: italic;
+    font-size: 1.1rem; color: var(--muted); flex-shrink: 0;
+    display: flex; align-items: center; gap: 20px;
+  }
+  .marquee-item::after { content: '✦'; color: var(--gold); font-style: normal; }
+  @keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+  /* Section */
+  section { padding: 120px 60px; }
+  .section-label {
+    font-family: 'Space Mono', monospace; font-size: 0.68rem;
+    letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold);
+    margin-bottom: 16px; display: flex; align-items: center; gap: 12px;
+  }
+  .section-label::before { content: ''; width: 30px; height: 1px; background: var(--gold); }
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.2rem, 4vw, 3.5rem); font-weight: 900;
+    color: var(--white); line-height: 1.1; margin-bottom: 20px;
+  }
+  h2 em { font-style: italic; color: var(--gold); }
+
+  /* About */
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+  .about-visual {
+    position: relative; height: 500px;
+    background: radial-gradient(circle at 40% 40%, #3d2010, #110e0a);
+    border: 1px solid rgba(201,147,58,0.15);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 7rem; overflow: hidden;
+  }
+  .about-visual::before {
+    content: ''; position: absolute; inset: 0;
+    background: repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(201,147,58,0.03) 40px, rgba(201,147,58,0.03) 41px);
+  }
+  .about-badge {
+    position: absolute; bottom: 24px; right: 24px;
+    background: var(--gold); color: var(--bg);
+    padding: 12px 20px; font-family: 'Space Mono', monospace;
+    font-size: 0.7rem; letter-spacing: 0.1em;
+  }
+  .about-text p { color: var(--muted); line-height: 1.9; margin-bottom: 20px; font-size: 1.05rem; }
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 40px; }
+  .stat { border-top: 1px solid rgba(201,147,58,0.2); padding-top: 20px; }
+  .stat-num { font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: 900; color: var(--gold); }
+  .stat-label { font-family: 'Space Mono', monospace; font-size: 0.65rem; letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase; margin-top: 4px; }
+
+  /* Menu */
+  .menu-section { background: var(--bg2); }
+  .menu-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 60px; }
+  .menu-card {
+    background: var(--bg3); padding: 40px 32px; position: relative;
+    transition: background 0.3s; overflow: hidden;
+  }
+  .menu-card::before {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+    background: var(--gold); transform: scaleX(0); transition: transform 0.3s; transform-origin: left;
+  }
+  .menu-card:hover::before { transform: scaleX(1); }
+  .menu-card:hover { background: rgba(107,61,30,0.15); }
+  .menu-emoji { font-size: 2.5rem; margin-bottom: 20px; display: block; }
+  .menu-name { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: var(--white); margin-bottom: 8px; }
+  .menu-desc { color: var(--muted); font-size: 0.95rem; line-height: 1.7; margin-bottom: 24px; }
+  .menu-price { font-family: 'Space Mono', monospace; color: var(--gold); font-size: 0.9rem; }
+
+  /* Process */
+  .process-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; margin-top: 60px; }
+  .process-step { position: relative; }
+  .step-num {
+    font-family: 'Playfair Display', serif; font-size: 4rem; font-weight: 900;
+    color: rgba(201,147,58,0.15); line-height: 1; margin-bottom: 20px;
+  }
+  .step-title { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; color: var(--white); margin-bottom: 12px; }
+  .step-desc { color: var(--muted); font-size: 0.9rem; line-height: 1.8; }
+
+  /* Testimonials */
+  .testimonials { background: var(--bg2); }
+  .test-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px; margin-top: 60px; }
+  .test-card {
+    background: var(--bg3); padding: 40px; border: 1px solid rgba(201,147,58,0.1);
+    position: relative;
+  }
+  .test-card::before { content: '"'; position: absolute; top: 20px; right: 30px; font-family: 'Playfair Display', serif; font-size: 5rem; color: rgba(201,147,58,0.15); line-height: 1; }
+  .test-text { font-style: italic; font-size: 1.1rem; line-height: 1.8; color: var(--cream); margin-bottom: 24px; }
+  .test-author { font-family: 'Space Mono', monospace; font-size: 0.7rem; letter-spacing: 0.1em; color: var(--gold); text-transform: uppercase; }
+  .stars { color: var(--gold); margin-bottom: 16px; font-size: 0.9rem; }
+
+  /* Locations */
+  .locations-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 60px; }
+  .loc-card {
+    background: var(--bg3); padding: 32px; border: 1px solid rgba(201,147,58,0.1);
+    transition: border-color 0.3s;
+  }
+  .loc-card:hover { border-color: var(--gold); }
+  .loc-city { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; color: var(--white); margin-bottom: 8px; }
+  .loc-addr { color: var(--muted); font-size: 0.9rem; line-height: 1.7; }
+  .loc-hours { font-family: 'Space Mono', monospace; font-size: 0.7rem; color: var(--gold); margin-top: 16px; letter-spacing: 0.05em; }
+
+  /* CTA */
+  .cta-section {
+    text-align: center; padding: 120px 60px;
+    background: radial-gradient(ellipse at center, rgba(107,61,30,0.3) 0%, transparent 70%), var(--bg);
+    border-top: 1px solid rgba(201,147,58,0.1);
+  }
+  .cta-section h2 { margin-bottom: 20px; }
+  .cta-section p { color: var(--muted); font-size: 1.1rem; max-width: 500px; margin: 0 auto 40px; }
+
+  /* Footer */
+  footer {
+    background: var(--bg2); border-top: 1px solid rgba(201,147,58,0.1);
+    padding: 60px; text-align: center;
+  }
+  footer .logo { display: block; margin-bottom: 16px; }
+  footer p { color: var(--muted); font-size: 0.85rem; }
+
+  /* Animations */
+  .fade-up { opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease, transform 0.8s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+
+  /* Hamburger */
+  .hamburger {
+    display: none; flex-direction: column; gap: 5px; cursor: none;
+    padding: 4px; z-index: 600;
+  }
+  .hamburger span {
+    display: block; width: 24px; height: 2px;
+    background: var(--gold); transition: all 0.3s;
+  }
+  .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  /* Mobile Menu */
+  .mobile-menu {
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(10,7,5,0.98); z-index: 550;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 36px; transform: translateX(100%); transition: transform 0.4s ease;
+  }
+  .mobile-menu.open { transform: translateX(0); }
+  .mobile-menu a {
+    font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700;
+    color: var(--cream); text-decoration: none; letter-spacing: 0.05em;
+    transition: color 0.3s;
+  }
+  .mobile-menu a:hover { color: var(--gold); }
+  .mobile-menu .mob-cta {
+    background: var(--gold); color: var(--bg);
+    padding: 14px 40px; font-family: 'Space Mono', monospace;
+    font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase;
+    margin-top: 16px;
+  }
+
+  @media(max-width:900px) {
+    nav { padding: 20px 24px; }
+    .nav-links, .nav-cta { display: none; }
+    .hamburger { display: flex; }
+    section { padding: 80px 24px; }
+    .hero { padding: 0 24px; min-height: 100vh; padding-top: 120px; }
+    .hero-visual { display: none; }
+    .hero h1 { font-size: 3rem; }
+    .about-grid, .test-grid { grid-template-columns: 1fr; }
+    .menu-grid, .process-grid, .locations-grid { grid-template-columns: 1fr; }
+    .stats { grid-template-columns: repeat(3,1fr); }
+    .cta-section { padding: 80px 24px; }
+    footer { padding: 40px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<div class="mobile-menu" id="mobile-menu">
+  <a href="#about" onclick="closeMob()">Our Story</a>
+  <a href="#menu" onclick="closeMob()">Menu</a>
+  <a href="#process" onclick="closeMob()">Process</a>
+  <a href="#locations" onclick="closeMob()">Locations</a>
+  <a href="#locations" class="mob-cta" onclick="closeMob()">Find a Cafe</a>
+</div>
+<nav id="navbar">
+  <a class="logo" href="#">ROAST<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">Our Story</a></li>
+    <li><a href="#menu">Menu</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#locations">Locations</a></li>
+  </ul>
+  <a class="nav-cta" href="#locations">Find a Cafe</a>
+  <div class="hamburger" id="hamburger" onclick="toggleMob()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-tag">Artisan Coffee Since 2009</div>
+    <h1>Coffee is an <em>Art.</em> We Take it Seriously.</h1>
+    <p>Single-origin beans. Hand-roasted in small batches. Served in 80+ cafes across the country. This is not just coffee — this is Roast.</p>
+    <div class="hero-btns">
+      <a href="#menu" class="btn-primary">Explore Menu</a>
+      <a href="#about" class="btn-outline">Our Story</a>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="coffee-circle">
+      ☕
+      <div class="ring-outer"><div class="ring-dot"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- Marquee -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span class="marquee-item">Ethiopia Yirgacheffe</span>
+    <span class="marquee-item">Colombia Supremo</span>
+    <span class="marquee-item">Guatemala Antigua</span>
+    <span class="marquee-item">Brazil Santos</span>
+    <span class="marquee-item">Kenya AA</span>
+    <span class="marquee-item">Sumatra Mandheling</span>
+    <span class="marquee-item">Ethiopia Yirgacheffe</span>
+    <span class="marquee-item">Colombia Supremo</span>
+    <span class="marquee-item">Guatemala Antigua</span>
+    <span class="marquee-item">Brazil Santos</span>
+    <span class="marquee-item">Kenya AA</span>
+    <span class="marquee-item">Sumatra Mandheling</span>
+  </div>
+</div>
+
+<!-- About -->
+<section id="about">
+  <div class="about-grid">
+    <div class="about-visual fade-up">
+      ☕
+      <div class="about-badge">Est. 2009 · Portland, OR</div>
+    </div>
+    <div class="about-text fade-up">
+      <div class="section-label">Our Story</div>
+      <h2>Born in a <em>Garage.</em> Grown into a Movement.</h2>
+      <p>It started with one roaster, one bag of Ethiopian beans, and an obsession with finding the perfect cup. Fifteen years later, Roast Coffee Co. is the most awarded artisan coffee brand in the Pacific Northwest.</p>
+      <p>We source directly from 40+ farms across 12 countries, building relationships that ensure every bean has a story worth tasting. Our master roasters treat each batch like a work of art.</p>
+      <div class="stats">
+        <div class="stat"><div class="stat-num">80+</div><div class="stat-label">Locations</div></div>
+        <div class="stat"><div class="stat-num">40+</div><div class="stat-label">Farm Partners</div></div>
+        <div class="stat"><div class="stat-num">15</div><div class="stat-label">Years Roasting</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Menu -->
+<section id="menu" class="menu-section">
+  <div class="section-label">The Menu</div>
+  <h2>Every Cup, <em>Crafted.</em></h2>
+  <div class="menu-grid">
+    <div class="menu-card fade-up">
+      <span class="menu-emoji">☕</span>
+      <div class="menu-name">The Dark Ritual</div>
+      <div class="menu-desc">Our signature dark roast. Deep chocolate, smoked oak, and a finish that lingers like a good conversation.</div>
+      <div class="menu-price">From $5.50</div>
+    </div>
+    <div class="menu-card fade-up">
+      <span class="menu-emoji">🫖</span>
+      <div class="menu-name">Single Origin Pour Over</div>
+      <div class="menu-desc">Each week, a new origin. Each cup, a journey. Currently featuring Ethiopia Yirgacheffe.</div>
+      <div class="menu-price">From $7.00</div>
+    </div>
+    <div class="menu-card fade-up">
+      <span class="menu-emoji">🧊</span>
+      <div class="menu-name">Cold Brew Reserve</div>
+      <div class="menu-desc">Steeped for 24 hours in cold water. Smooth, bold, and completely unlike anything you've had before.</div>
+      <div class="menu-price">From $6.50</div>
+    </div>
+    <div class="menu-card fade-up">
+      <span class="menu-emoji">🌙</span>
+      <div class="menu-name">Midnight Espresso</div>
+      <div class="menu-desc">A double shot pulled at exactly 93°C. Intense, velvety, and made for those who mean business.</div>
+      <div class="menu-price">From $4.50</div>
+    </div>
+    <div class="menu-card fade-up">
+      <span class="menu-emoji">🍂</span>
+      <div class="menu-name">Autumn Latte</div>
+      <div class="menu-desc">Spiced cardamom, brown sugar, and oat milk. Seasonal. Comforting. Worth the wait in line.</div>
+      <div class="menu-price">From $7.50</div>
+    </div>
+    <div class="menu-card fade-up">
+      <span class="menu-emoji">📦</span>
+      <div class="menu-name">Subscription Box</div>
+      <div class="menu-desc">Freshly roasted beans delivered to your door. Monthly, bi-weekly, or weekly. Cancel anytime.</div>
+      <div class="menu-price">From $28/mo</div>
+    </div>
+  </div>
+</section>
+
+<!-- Process -->
+<section id="process">
+  <div class="section-label">How We Roast</div>
+  <h2>The <em>Process</em> Behind the Cup</h2>
+  <div class="process-grid">
+    <div class="process-step fade-up">
+      <div class="step-num">01</div>
+      <div class="step-title">Direct Sourcing</div>
+      <div class="step-desc">We travel to the farms. Meet the farmers. Taste the cherries off the branch. No middlemen.</div>
+    </div>
+    <div class="process-step fade-up">
+      <div class="step-num">02</div>
+      <div class="step-title">Green Selection</div>
+      <div class="step-desc">Every bag of green beans is hand-inspected and cupped before it earns a place in our roastery.</div>
+    </div>
+    <div class="process-step fade-up">
+      <div class="step-num">03</div>
+      <div class="step-title">Small Batch Roasting</div>
+      <div class="step-desc">Max 15kg per roast. Our master roasters monitor every second of the Maillard reaction.</div>
+    </div>
+    <div class="process-step fade-up">
+      <div class="step-num">04</div>
+      <div class="step-title">Rest & Ship</div>
+      <div class="step-desc">Beans rest for 48 hours post-roast, then ship to you within 24 hours. Peak freshness, guaranteed.</div>
+    </div>
+  </div>
+</section>
+
+<!-- Testimonials -->
+<section class="testimonials">
+  <div class="section-label">What People Say</div>
+  <h2>Words from Our <em>Community</em></h2>
+  <div class="test-grid">
+    <div class="test-card fade-up">
+      <div class="stars">★★★★★</div>
+      <div class="test-text">I've been to coffee shops on four continents, and nothing compares to the Dark Ritual. It's the only reason I get out of bed.</div>
+      <div class="test-author">Marcus T. — Portland, OR</div>
+    </div>
+    <div class="test-card fade-up">
+      <div class="stars">★★★★★</div>
+      <div class="test-text">The subscription box changed my mornings forever. My colleagues now ask what my "secret" is. I tell them nothing.</div>
+      <div class="test-author">Priya M. — Seattle, WA</div>
+    </div>
+    <div class="test-card fade-up">
+      <div class="stars">★★★★★</div>
+      <div class="test-text">As a barista for 12 years, I know quality. Roast's single origin pour overs are the most complex I've ever tasted.</div>
+      <div class="test-author">James O. — San Francisco, CA</div>
+    </div>
+    <div class="test-card fade-up">
+      <div class="stars">★★★★★</div>
+      <div class="test-text">The atmosphere in their cafes is unlike anything else. Dark, warm, quiet. The perfect place to disappear into a book.</div>
+      <div class="test-author">Sophie L. — New York, NY</div>
+    </div>
+  </div>
+</section>
+
+<!-- Locations -->
+<section id="locations">
+  <div class="section-label">Find Us</div>
+  <h2>80+ Cafes <em>Nationwide</em></h2>
+  <div class="locations-grid">
+    <div class="loc-card fade-up">
+      <div class="loc-city">Portland</div>
+      <div class="loc-addr">Flagship Roastery<br>1420 SE Morrison St, OR 97214</div>
+      <div class="loc-hours">Mon–Fri: 6am–8pm · Sat–Sun: 7am–9pm</div>
+    </div>
+    <div class="loc-card fade-up">
+      <div class="loc-city">Seattle</div>
+      <div class="loc-addr">Capitol Hill<br>308 E Pine St, WA 98122</div>
+      <div class="loc-hours">Mon–Fri: 6am–7pm · Sat–Sun: 7am–8pm</div>
+    </div>
+    <div class="loc-card fade-up">
+      <div class="loc-city">San Francisco</div>
+      <div class="loc-addr">Mission District<br>2950 24th St, CA 94110</div>
+      <div class="loc-hours">Mon–Fri: 6:30am–7pm · Sat–Sun: 7am–8pm</div>
+    </div>
+    <div class="loc-card fade-up">
+      <div class="loc-city">New York</div>
+      <div class="loc-addr">Williamsburg<br>135 N 7th St, Brooklyn, NY 11249</div>
+      <div class="loc-hours">Mon–Fri: 7am–8pm · Sat–Sun: 8am–9pm</div>
+    </div>
+    <div class="loc-card fade-up">
+      <div class="loc-city">Chicago</div>
+      <div class="loc-addr">Wicker Park<br>1520 N Damen Ave, IL 60622</div>
+      <div class="loc-hours">Mon–Fri: 6am–7pm · Sat–Sun: 7am–8pm</div>
+    </div>
+    <div class="loc-card fade-up">
+      <div class="loc-city">Los Angeles</div>
+      <div class="loc-addr">Silver Lake<br>2838 Sunset Blvd, CA 90026</div>
+      <div class="loc-hours">Mon–Fri: 6:30am–8pm · Sat–Sun: 7am–9pm</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-section">
+  <div class="section-label" style="justify-content:center">Start Today</div>
+  <h2>Your Perfect Cup <em>Awaits</em></h2>
+  <p>Subscribe to our monthly delivery and taste the world's finest beans, roasted fresh and shipped to your door.</p>
+  <a href="#menu" class="btn-primary">Subscribe Now →</a>
+</div>
+
+<!-- Footer -->
+<footer>
+  <a class="logo" href="#">ROAST<span>.</span></a>
+  <p style="margin-top:8px">© 2026 Roast Coffee Co. All rights reserved. · 80+ Locations Nationwide</p>
+</footer>
+
+<script>
+  // Mobile menu
+  function toggleMob() {
+    document.getElementById('mobile-menu').classList.toggle('open');
+    document.getElementById('hamburger').classList.toggle('open');
+    document.body.style.overflow = document.getElementById('mobile-menu').classList.contains('open') ? 'hidden' : '';
+  }
+  function closeMob() {
+    document.getElementById('mobile-menu').classList.remove('open');
+    document.getElementById('hamburger').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // Cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursor-ring');
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+    setTimeout(() => {
+      ring.style.left = e.clientX + 'px';
+      ring.style.top = e.clientY + 'px';
+    }, 60);
+  });
+
+  // Nav scroll
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
+  });
+
+  // Fade up
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
