@@ -383,6 +383,13 @@ h2.section-title {
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 #form-success { display: none; background: rgba(200,245,66,0.1); border: 1px solid rgba(200,245,66,0.3); border-radius: var(--radius); padding: 20px 24px; text-align: center; color: var(--accent); font-family: var(--font-head); font-weight: 600; margin-top: 16px; }
 
+/* ===map====*/
+.map-section {
+  margin-top: 40px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(200,245,66,0.15);
+}
 /* ===== FILTER BUTTONS ===== */
 .filter-btn { background: var(--card); border: 1px solid var(--border); color: var(--muted); padding: 8px 18px; border-radius: 100px; font-family: var(--font-mono); font-size: 0.75rem; cursor: pointer; transition: all var(--transition); }
 .filter-btn:hover, .active-filter { background: var(--accent); border-color: var(--accent); color: #050508; }
