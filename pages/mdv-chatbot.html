@@ -470,68 +470,128 @@ header {
 </div>
 
 <script>
-/* ── SYSTEM PROMPT ── */
-const SYSTEM = `You are the official AI assistant for MDV Solutions — a professional web design and digital solutions company. You are knowledgeable, concise, and always professional. Respond in the same language the user writes in (English, Hindi, or Hinglish).
+/* ── FIXED Q&A DATABASE ── */
+const QA = [
+  // Services
+  { q: ['service','services','kya karte','what do you','kya kaam','offer','provide'],
+    a: `MDV Solutions yeh services offer karta hai:<br><br>
+    🎨 <strong>Landing Pages</strong> — $500–$1,500<br>
+    🏢 <strong>Business Websites</strong> — $1,500–$5,000<br>
+    🛒 <strong>E-commerce</strong> — $5,000–$15,000<br>
+    📱 <strong>SaaS / Web Apps</strong> — Custom pricing<br>
+    🎯 <strong>Branding & Identity</strong> — Custom pricing<br><br>
+    Koi specific service ke baare mein jaanna hai?` },
 
-## ABOUT MDV SOLUTIONS
-- Premium web design & development company
-- Specializes in websites, e-commerce, SaaS, branding, and digital experiences
-- 6+ years of experience building for startups, agencies, and enterprises
-- Known for high-quality, conversion-focused digital products
+  // Pricing
+  { q: ['price','pricing','cost','kitna','charge','budget','rate','fees'],
+    a: `MDV Solutions ki pricing:<br><br>
+    💰 <strong>Landing Page:</strong> $500 – $1,500<br>
+    💰 <strong>Business Website:</strong> $1,500 – $5,000<br>
+    💰 <strong>E-commerce:</strong> $5,000 – $15,000<br>
+    💰 <strong>Custom Project:</strong> $15,000+<br><br>
+    Free quote ke liye "Get a Quote" button click karein!` },
 
-## SERVICES
-1. Landing Pages — High-converting, beautifully designed single pages ($500–$1,500)
-2. Business Websites — Full corporate/brand websites ($1,500–$5,000)
-3. E-commerce Stores — Shopify, Next.js, Stripe-powered shops ($5,000–$15,000)
-4. SaaS Dashboards — Complex web applications and platforms
-5. Branding & Identity — Logo, design systems, visual identity
-6. Custom Projects — Unique digital solutions ($15,000+)
+  // Portfolio / Projects
+  { q: ['portfolio','project','work','kaam','client','example','show'],
+    a: `Hamare recent projects:<br><br>
+    ✈️ <strong>TravelFlow</strong> — Travel booking platform (4.9★ rating)<br>
+    💄 <strong>BeautyCo</strong> — Luxury skincare e-commerce (+410% orders)<br>
+    ☕ <strong>Roast Coffee</strong> — Brand website (+190% subscriptions)<br>
+    👗 <strong>Luxe Fashion</strong> — E-commerce store (+340% conversions)<br><br>
+    Work page pe saare projects dekhein!` },
 
-## PORTFOLIO PROJECTS
+  // TravelFlow
+  { q: ['travelflow','travel','travel flow'],
+    a: `✈️ <strong>TravelFlow Agency</strong><br><br>
+    Full destination booking platform with 3D globe & real-time pricing.<br><br>
+    <em>Tech:</em> React, Three.js, Stripe, MongoDB<br>
+    <em>Result:</em> ★ 4.9/5 rating from 12,000+ users` },
 
-### TravelFlow Agency (Travel / Landing Page)
-- Full destination booking platform with 3D globe, real-time pricing, seamless booking
-- Tech: React, Three.js, Stripe, MongoDB
-- Result: 4.9/5 rating from 12,000+ users
+  // BeautyCo
+  { q: ['beautyco','beauty','skincare','beauty co'],
+    a: `💄 <strong>BeautyCo Skincare</strong><br><br>
+    Luxury skincare brand with virtual try-on & personalized quiz.<br><br>
+    <em>Tech:</em> Next.js, WebGL, Stripe, Klaviyo<br>
+    <em>Result:</em> 410% increase in repeat orders` },
 
-### BeautyCo Skincare (Luxury E-commerce)
-- Luxury skincare brand, virtual try-on, personalized quiz, subscription boxes
-- Tech: Next.js, WebGL, Stripe, Klaviyo
-- Result: 410% increase in repeat orders
+  // Roast Coffee
+  { q: ['roast','coffee','roast coffee'],
+    a: `☕ <strong>Roast Coffee Co.</strong><br><br>
+    Artisan coffee brand with parallax scrolling & subscription system.<br><br>
+    <em>Tech:</em> HTML, CSS, GSAP, Stripe<br>
+    <em>Result:</em> 190% increase in subscriptions` },
 
-### Roast Coffee Co. (Brand Website)
-- Artisan coffee brand, parallax scrolling, subscription system, 80+ cafe locations
-- Tech: HTML, CSS, GSAP, Stripe
-- Result: 190% increase in subscriptions
+  // Luxe Fashion
+  { q: ['luxe','fashion','luxe fashion','clothing'],
+    a: `👗 <strong>Luxe Fashion Store</strong><br><br>
+    Premium clothing brand with 3D product views & AI size guide.<br><br>
+    <em>Tech:</em> Next.js, Shopify, Stripe, Three.js<br>
+    <em>Result:</em> 340% increase in conversions in 60 days` },
 
-### Luxe Fashion Store (E-commerce)
-- Premium clothing brand, 3D product views, size guide AI, one-click checkout
-- Tech: Next.js, Shopify, Stripe, Three.js
-- Result: 340% increase in conversions in 60 days
+  // Quote
+  { q: ['quote','start','begin','hire','contact','get started','project start','kaise shuru'],
+    a: `🚀 Project shuru karne ke liye:<br><br>
+    1. Website pe <strong>"Get a Quote"</strong> button click karein<br>
+    2. Apna naam, email, project type aur budget fill karein<br>
+    3. Hum <strong>24 ghante</strong> mein reply karenge!<br><br>
+    Ya directly contact karein — hum help karne ke liye taiyaar hain! 😊` },
 
-## PROCESS
-1. Discovery Call — Understand goals, audience, and vision
-2. Strategy & Proposal — Custom plan with timeline and pricing
-3. Design — Wireframes, mockups, client feedback
-4. Development — Full build with quality assurance
-5. Launch & Support — Deployment + ongoing maintenance
+  // About
+  { q: ['about','kaun','who','team','company','mdv','kya hai'],
+    a: `👋 <strong>MDV Solutions</strong> ke baare mein:<br><br>
+    Hum ek premium web design & development agency hain.<br><br>
+    ✅ 6+ years experience<br>
+    ✅ 150+ projects completed<br>
+    ✅ 98+ happy clients<br>
+    ✅ Startups se Fortune 500 tak<br><br>
+    Udaipur, Rajasthan mein based — globally serve karte hain! 🌍` },
 
-## GETTING STARTED
-- Visit the website and click "Get a Free Quote"
-- Fill in project details (name, email, type, budget, description)
-- Team responds within 24 business hours
+  // Process
+  { q: ['process','kaise','how','steps','timeline','time','kitna time'],
+    a: `⚙️ <strong>Hamara Process:</strong><br><br>
+    1️⃣ <strong>Discovery Call</strong> — Goals samjhenge<br>
+    2️⃣ <strong>Proposal</strong> — Timeline & pricing<br>
+    3️⃣ <strong>Design</strong> — Mockups & feedback<br>
+    4️⃣ <strong>Development</strong> — Full build<br>
+    5️⃣ <strong>Launch</strong> — Deploy + support<br><br>
+    Typical timeline: 2–6 weeks project size ke hisaab se.` },
 
-Always be professional, helpful, and encourage users to reach out for a quote. If asked something outside your knowledge, offer to connect them with the MDV team directly.`;
+  // Location
+  { q: ['location','where','kahan','address','udaipur','rajasthan','india'],
+    a: `📍 <strong>MDV Solutions</strong><br><br>
+    Udaipur, Rajasthan, India<br><br>
+    Remote-first agency — India aur globally clients serve karte hain! 🌍` },
+
+  // Hello / Hi
+  { q: ['hello','hi','hey','namaste','hii','helo','good morning','good evening','good afternoon','sup'],
+    a: `Hello! 👋 <strong>MDV Solutions</strong> mein aapka swagat hai!<br><br>
+    Main aapki kaise help kar sakta hoon? Aap puch sakte hain:<br>
+    🛠 Services · 💰 Pricing · 🗂 Portfolio · 📋 Quote` },
+
+  // Thanks
+  { q: ['thanks','thank you','shukriya','dhanyawad','great','awesome','nice'],
+    a: `Shukriya! 😊 Khushi hui madad karke.<br><br>
+    Koi aur sawaal ho toh zaroor poochein! 🚀` },
+];
+
+/* ── Match function ── */
+function getReply(input) {
+  const text = input.toLowerCase().trim();
+  for (const item of QA) {
+    for (const keyword of item.q) {
+      if (text.includes(keyword)) return item.a;
+    }
+  }
+  return `Hmm, mujhe is sawaal ka jawab nahi pata. 🤔<br><br>
+  Aap directly humse contact kar sakte hain ya <strong>"Get a Quote"</strong> fill karein — hum 24 ghante mein reply karenge! 😊`;
+}
 
 /* ── State ── */
-const history = [];
-let busy = false;
+const chatArea = document.getElementById('chat-area');
+const msgInput = document.getElementById('msg-input');
+const sendBtn  = document.getElementById('send-btn');
 
-const chatArea  = document.getElementById('chat-area');
-const msgInput  = document.getElementById('msg-input');
-const sendBtn   = document.getElementById('send-btn');
-
-/* ── Auto-resize textarea ── */
+/* ── Auto-resize ── */
 msgInput.addEventListener('input', () => {
   msgInput.style.height = 'auto';
   msgInput.style.height = Math.min(msgInput.scrollHeight, 110) + 'px';
@@ -540,45 +600,29 @@ msgInput.addEventListener('keydown', e => {
   if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); }
 });
 
-/* ── Helpers ── */
 function now() {
   return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-}
-
-function fmt(txt) {
-  txt = txt.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-  txt = txt.replace(/`([^`]+)`/g,     '<em class="chip">$1</em>');
-  txt = txt.replace(/^[-•]\s(.+)$/gm, '<li>$1</li>');
-  txt = txt.replace(/(<li>[\s\S]*?<\/li>)/g, '<ul>$1</ul>');
-  txt = txt.replace(/\n\n/g, '<br><br>').replace(/\n/g, '<br>');
-  return txt;
 }
 
 function addMsg(role, html, time) {
   const row = document.createElement('div');
   row.className = `msg-row ${role}`;
-
   const av = document.createElement('div');
   av.className = `av ${role}`;
   av.textContent = role === 'bot' ? 'MDV' : '👤';
-
   const right = document.createElement('div');
-
   const bub = document.createElement('div');
   bub.className = `bubble ${role}`;
   bub.innerHTML = html;
-
   const ts = document.createElement('div');
   ts.className = 'ts';
   ts.textContent = time || now();
-
   right.appendChild(bub);
   right.appendChild(ts);
   row.appendChild(av);
   row.appendChild(right);
   chatArea.appendChild(row);
   chatArea.scrollTop = chatArea.scrollHeight;
-  return bub;
 }
 
 function showTyping() {
@@ -600,13 +644,11 @@ function hideTyping() {
 
 function clearChat() {
   chatArea.innerHTML = '';
-  history.length = 0;
   document.getElementById('quick-chips').style.display = 'flex';
-  // Re-show welcome
   chatArea.innerHTML = `<div class="welcome-card">
     <div class="wc-logo">MDV</div>
     <h2>Welcome to <span>MDV Solutions</span></h2>
-    <p>I'm your dedicated AI assistant. Ask me anything about our services, projects, pricing, or how we can help grow your business.</p>
+    <p>I'm your dedicated assistant. Ask me anything about our services, projects, pricing, or how we can help grow your business.</p>
     <div class="wc-divider"></div>
     <div class="wc-caps">
       <span class="wc-cap">Web Design</span><span class="wc-cap">Development</span>
@@ -621,71 +663,31 @@ function quick(text) {
   document.getElementById('quick-chips').style.display = 'none';
 }
 
-/* ── Main send ── */
-async function send() {
+function send() {
   const text = msgInput.value.trim();
-  if (!text || busy) return;
-
+  if (!text) return;
   document.getElementById('quick-chips').style.display = 'none';
   addMsg('user', text);
-  history.push({ role: 'user', content: text });
-
   msgInput.value = '';
   msgInput.style.height = 'auto';
-  busy = true; sendBtn.disabled = true;
+  sendBtn.disabled = true;
   showTyping();
 
-  try {
-    const geminiMessages = history.map(m => ({
-      role: m.role === 'assistant' ? 'model' : 'user',
-      parts: [{ text: m.content }]
-    }));
-
-    const res = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyCnEENT8dSIPhDisTekVrdEhj9d2YPMY-k', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        system_instruction: { parts: [{ text: SYSTEM }] },
-        contents: geminiMessages,
-        generationConfig: { maxOutputTokens: 1000 }
-      })
-    });
-    const data = await res.json();
-    const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || 'Something went wrong. Please try again.';
-    history.push({ role: 'assistant', content: reply });
+  // Simulate typing delay
+  setTimeout(() => {
     hideTyping();
-    addMsg('bot', fmt(reply));
-  } catch {
-    hideTyping();
-    addMsg('bot', '⚠️ Network error. Please check your connection and try again.');
-  }
-
-  busy = false; sendBtn.disabled = false;
-  msgInput.focus();
+    addMsg('bot', getReply(text));
+    sendBtn.disabled = false;
+    msgInput.focus();
+  }, 800);
 }
 
-
-/* ── Floating particles ── */
-(function() {
-  for (let i = 0; i < 12; i++) {
-    const p = document.createElement('div');
-    p.className = 'particle';
-    const size = Math.random() * 4 + 2;
-    p.style.cssText = `
-      width: ${size}px; height: ${size}px;
-      left: ${Math.random() * 100}%;
-      animation-duration: ${Math.random() * 15 + 10}s;
-      animation-delay: ${Math.random() * 10}s;
-      opacity: ${Math.random() * 0.5 + 0.1};
-    `;
-    document.body.appendChild(p);
-  }
-})();
-
-/* ── Initial greeting ── */
+/* ── Greeting ── */
 setTimeout(() => {
-  addMsg('bot', fmt('Hello! 👋 Welcome to **MDV Solutions**.\n\nI\'m your dedicated AI assistant, here to help you with:\n- Our **services** and **portfolio**\n- **Pricing** and project estimates\n- **Getting started** with your project\n\nHow can I assist you today?'), now());
+  addMsg('bot', `Hello! 👋 Welcome to <strong>MDV Solutions</strong>.<br><br>
+  Main aapki kaise help kar sakta hoon? Aap puch sakte hain:<br>
+  🛠 Services · 💰 Pricing · 🗂 Portfolio · 📋 Quote`, now());
 }, 500);
-</script>
+
 </body>
 </html>
