@@ -53,7 +53,7 @@
 </div>
 
 <nav id="navbar">
-  <a class="logo" href="../index.html">PIXEL<span>FORGE</span></a>
+  <a class="logo" href="../index.html">MDV <span>SOLUTIONS</span></a>
   <ul class="nav-links">
     <li><a href="../index.html">Home</a></li>
     <li><a href="services.html">Services</a></li>
@@ -73,7 +73,6 @@
 </div>
 
 <section class="section">
-  <!-- Filter -->
   <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:40px">
     <button class="filter-btn active-filter" onclick="filterWork(this,'all')">All Work</button>
     <button class="filter-btn" onclick="filterWork(this,'saas')">SaaS</button>
@@ -83,73 +82,195 @@
   </div>
 
   <div class="work-grid" id="work-grid">
-    <div class="work-card" data-cat="saas">
-      <div class="work-thumb wt1">
-        <div style="display:flex;flex-direction:column;align-items:center;gap:12px">
-          <div class="mock-browser"><div class="mock-titlebar"><div class="dot d-red"></div><div class="dot d-yellow"></div><div class="dot d-green"></div></div><div class="mock-content"><div class="mock-line" style="width:100%"></div><div class="mock-line" style="width:70%"></div><div class="mock-line" style="width:85%"></div></div></div>
-        </div>
-        <div class="work-overlay"><button class="view-btn" onclick="showProject('Nexus Analytics','SaaS Dashboard','Complete analytics platform with real-time data visualization, custom reporting, and AI-powered insights. Built with React, D3.js, and Node.js backend.','React · D3.js · Node.js · PostgreSQL','↑ 280% user retention')">View Case Study</button></div>
-      </div>
-      <div class="work-info"><div class="work-cat">SaaS / Dashboard</div><div class="work-title">Nexus Analytics Platform</div><div class="work-desc-small">Real-time data visualization for 50k+ users</div></div>
-    </div>
-    <div class="work-card" data-cat="ecom">
-      <div class="work-thumb wt2">
-        <div style="text-align:center"><div style="font-size:2.5rem">👗</div><div style="font-family:'Syne',sans-serif;font-weight:800;color:white;font-size:1.1rem;margin-top:8px">LUXE</div></div>
-         <div class="work-overlay"><button class="view-btn" onclick="window.open('Luxe Fashion Store.html', '_blank')">View Case Study</button></div>
-      </div>
-      <div class="work-info"><div class="work-cat">E-commerce</div><div class="work-title">Luxe Fashion Store</div><div class="work-desc-small">Premium clothing brand with immersive UX</div></div>
-    </div>
-    <div class="work-card" data-cat="landing">
-      <div class="work-thumb wt3">
-        <div style="text-align:center"><div style="font-size:2.5rem">✈️</div><div style="font-family:'Syne',sans-serif;font-weight:800;color:white;font-size:1.1rem;margin-top:8px">TravelFlow</div></div>
-        <div class="work-overlay"><button class="view-btn" onclick="window.open('travelflow.html', '_blank')">View Case Study</button></div>
-      </div>
-      <div class="work-info"><div class="work-cat">Travel / Landing Page</div><div class="work-title">TravelFlow Agency</div><div class="work-desc-small">Destination booking with 3D map experience</div></div>
-    </div>
-    <div class="work-card" data-cat="brand">
-      <div class="work-thumb wt4">
-        <div style="text-align:center"><div style="font-size:2.5rem">☕</div><div style="font-family:'Syne',sans-serif;font-weight:800;color:white;font-size:1.1rem;margin-top:8px">ROAST</div></div>
-        <div class="work-overlay"><button class="view-btn" onclick="window.open('roast.html', '_blank')">View Case Study</button></div>
-      </div>
-      <div class="work-info"><div class="work-cat">Food & Beverage / Brand</div><div class="work-title">Roast Coffee Co.</div><div class="work-desc-small">Artisan brand site with subscription platform</div></div>
-    </div>
-    <!-- <div class="work-card" data-cat="saas">
-      <div class="work-thumb wt5">
-        <div style="text-align:center"><div style="font-size:2.5rem">🌿</div><div style="font-family:'Syne',sans-serif;font-weight:800;color:white;font-size:1.1rem;margin-top:8px">GreenBase</div></div>
-        <div class="work-overlay"><button class="view-btn" onclick="showProject('GreenBase','B2B SaaS Platform','Sustainability tracking platform for enterprises. Carbon footprint dashboards, team reporting, and compliance automation.','React · Node.js · Supabase · Chart.js','↑ 520% signups')">View Case Study</button></div>
-      </div>
-      <div class="work-info"><div class="work-cat">B2B SaaS</div><div class="work-title">GreenBase Sustainability</div><div class="work-desc-small">Enterprise carbon tracking and reporting</div></div>
-    </div> --><!-- Stock Market Prediction -->
-<div class="work-card" data-cat="saas">
-  <div class="work-thumb" style="background:linear-gradient(135deg,#020d18,#0a2540,#003320);position:relative;overflow:hidden;">
-    <!-- Animated chart lines -->
-    <svg style="position:absolute;bottom:0;left:0;width:100%;height:65%;opacity:0.5" viewBox="0 0 300 80" preserveAspectRatio="none">
-      <polyline points="0,70 30,55 60,65 90,40 120,50 150,25 180,35 210,15 240,28 270,10 300,20" fill="none" stroke="#00ff88" stroke-width="2.5"/>
-      <polyline points="0,75 30,65 60,70 90,52 120,60 150,40 180,48 210,30 240,42 270,22 300,32" fill="none" stroke="#00c8ff" stroke-width="1.5" stroke-dasharray="4 2"/>
-    </svg>
-    <div style="position:absolute;top:12px;left:14px;font-family:'Space Mono',monospace;font-size:0.6rem;color:#00ff88;letter-spacing:0.1em">NASDAQ ▲ 2.4%</div>
-    <div style="position:absolute;top:12px;right:14px;font-family:'Space Mono',monospace;font-size:0.6rem;color:#00c8ff">AI PRED</div>
+
+  <!-- Luxe Fashion -->
+<div class="work-card" data-cat="ecom">
+  <div class="work-thumb" style="background:linear-gradient(135deg,#0a0006,#3b0764,#7c2d8a);position:relative;overflow:hidden;">
+    <!-- Floating fabric shapes -->
+    <div style="position:absolute;inset:0;background:repeating-linear-gradient(45deg,rgba(255,255,255,0.03) 0px,rgba(255,255,255,0.03) 1px,transparent 1px,transparent 20px);"></div>
+    <div style="position:absolute;top:10px;left:14px;font-family:'Space Mono',monospace;font-size:0.6rem;color:#f0abfc;letter-spacing:0.1em">NEW COLLECTION ✦</div>
+    <div style="position:absolute;top:10px;right:14px;font-family:'Space Mono',monospace;font-size:0.6rem;color:#e879f9">SS 2026</div>
     <div style="text-align:center;position:relative;z-index:1">
-      <div style="font-size:2.5rem">📈</div>
-      <div style="font-family:'Syne',sans-serif;font-weight:800;color:white;font-size:1.1rem;margin-top:8px">StockSense</div>
+      <div style="font-size:2.5rem">👗</div>
+      <div style="font-family:'Syne',sans-serif;font-weight:800;color:white;font-size:1.1rem;margin-top:8px;letter-spacing:0.15em">LUXE</div>
     </div>
-    <div class="work-overlay">
-      <button class="view-btn" onclick="showProject('StockSense AI','SaaS / FinTech','AI-powered stock market prediction platform with real-time charts, sentiment analysis, portfolio tracker & automated buy/sell signals.','React · Python · TensorFlow · WebSocket','89% prediction accuracy · 15,000+ traders')">View Case Study</button>
-    </div>
+    <div class="work-overlay"><button class="view-btn" onclick="window.open('Luxe Fashion Store.html', '_blank')">View Case Study</button></div>
   </div>
-  <div class="work-info">
-    <div class="work-cat">SaaS / FinTech</div>
-    <div class="work-title">StockSense AI</div>
-    <div class="work-desc-small">AI-powered stock prediction with 89% accuracy</div>
-  </div>
+  <div class="work-info"><div class="work-cat">E-commerce</div><div class="work-title">Luxe Fashion Store</div><div class="work-desc-small">Premium clothing brand with immersive UX</div></div>
 </div>
-    <div class="work-card" data-cat="ecom landing">
-      <div class="work-thumb wt6">
-        <div style="text-align:center"><div style="font-size:2.5rem">💜</div><div style="font-family:'Syne',sans-serif;font-weight:800;color:white;font-size:1.1rem;margin-top:8px">BeautyCo</div></div>
-         <div class="work-overlay"><button class="view-btn" onclick="window.open('beautyco.html', '_blank')">View Case Study</button></div>
-       </div>
-      <div class="work-info"><div class="work-cat">Beauty / E-commerce</div><div class="work-title">BeautyCo Skincare</div><div class="work-desc-small">Luxury brand with virtual try-on technology</div></div>
+
+<!-- TravelFlow -->
+<div class="work-card" data-cat="landing">
+  <div class="work-thumb" style="background:linear-gradient(135deg,#020b18,#0c2a4a,#0e4272);position:relative;overflow:hidden;">
+    <!-- Animated route lines -->
+    <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:0.25" viewBox="0 0 300 180" preserveAspectRatio="none">
+      <path d="M20,160 Q80,20 150,90 T280,40" fill="none" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="6 3"/>
+      <circle cx="20" cy="160" r="4" fill="#38bdf8"/>
+      <circle cx="280" cy="40" r="4" fill="#f59e0b"/>
+    </svg>
+    <div style="position:absolute;top:10px;left:14px;font-family:'Space Mono',monospace;font-size:0.6rem;color:#38bdf8;letter-spacing:0.1em">✈ LIVE ROUTES</div>
+    <div style="position:absolute;top:10px;right:14px;font-family:'Space Mono',monospace;font-size:0.6rem;color:#f59e0b">12K+ FLIGHTS</div>
+    <div style="text-align:center;position:relative;z-index:1">
+      <div style="font-size:2.5rem">✈️</div>
+      <div style="font-family:'Syne',sans-serif;font-weight:800;color:white;font-size:1.1rem;margin-top:8px">TravelFlow</div>
     </div>
+    <div class="work-overlay"><button class="view-btn" onclick="window.open('travelflow.html', '_blank')">View Case Study</button></div>
+  </div>
+  <div class="work-info"><div class="work-cat">Travel / Landing Page</div><div class="work-title">TravelFlow Agency</div><div class="work-desc-small">Destination booking with 3D map experience</div></div>
+</div>
+
+<!-- Roast Coffee -->
+<div class="work-card" data-cat="brand">
+  <div class="work-thumb" style="background:linear-gradient(135deg,#0c0500,#2c1503,#4a2008);position:relative;overflow:hidden;">
+    <!-- Steam lines -->
+    <svg style="position:absolute;top:0;left:50%;transform:translateX(-50%);width:80px;height:60px;opacity:0.3" viewBox="0 0 80 60">
+      <path d="M20,60 Q15,40 20,20 Q25,5 20,0" fill="none" stroke="#d97706" stroke-width="1.5"/>
+      <path d="M40,60 Q35,35 40,15 Q45,0 40,0" fill="none" stroke="#f59e0b" stroke-width="1.5"/>
+      <path d="M60,60 Q55,40 60,20 Q65,5 60,0" fill="none" stroke="#d97706" stroke-width="1.5"/>
+    </svg>
+    <div style="position:absolute;top:10px;left:14px;font-family:'Space Mono',monospace;font-size:0.6rem;color:#d97706;letter-spacing:0.1em">☕ FRESHLY ROASTED</div>
+    <div style="position:absolute;top:10px;right:14px;font-family:'Space Mono',monospace;font-size:0.6rem;color:#f59e0b">80+ CAFES</div>
+    <div style="text-align:center;position:relative;z-index:1">
+      <div style="font-size:2.5rem">☕</div>
+      <div style="font-family:'Syne',sans-serif;font-weight:800;color:white;font-size:1.1rem;margin-top:8px;letter-spacing:0.15em">ROAST</div>
+    </div>
+    <div class="work-overlay"><button class="view-btn" onclick="window.open('roast.html', '_blank')">View Case Study</button></div>
+  </div>
+  <div class="work-info"><div class="work-cat">Food & Beverage / Brand</div><div class="work-title">Roast Coffee Co.</div><div class="work-desc-small">Artisan brand site with subscription platform</div></div>
+</div>
+
+<!-- BeautyCo -->
+<div class="work-card" data-cat="ecom landing">
+  <div class="work-thumb" style="background:linear-gradient(135deg,#1a0010,#4a0030,#7c1060);position:relative;overflow:hidden;">
+    <!-- Shimmer effect -->
+    <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 60% 40%,rgba(236,72,153,0.2),transparent 60%);"></div>
+    <div style="position:absolute;bottom:0;left:0;right:0;height:40%;background:linear-gradient(to top,rgba(236,72,153,0.1),transparent);"></div>
+    <div style="position:absolute;top:10px;left:14px;font-family:'Space Mono',monospace;font-size:0.6rem;color:#f9a8d4;letter-spacing:0.1em">✦ LUXURY SKIN</div>
+    <div style="position:absolute;top:10px;right:14px;font-family:'Space Mono',monospace;font-size:0.6rem;color:#ec4899">TRY-ON AI</div>
+    <div style="text-align:center;position:relative;z-index:1">
+      <div style="font-size:2.5rem">💜</div>
+      <div style="font-family:'Syne',sans-serif;font-weight:800;color:white;font-size:1.1rem;margin-top:8px;letter-spacing:0.1em">BeautyCo</div>
+    </div>
+    <div class="work-overlay"><button class="view-btn" onclick="window.open('beautyco.html', '_blank')">View Case Study</button></div>
+  </div>
+  <div class="work-info"><div class="work-cat">Beauty / E-commerce</div><div class="work-title">BeautyCo Skincare</div><div class="work-desc-small">Luxury brand with virtual try-on technology</div></div>
+</div>
+
+    <!-- StockSense AI -->
+    <div class="work-card" data-cat="saas">
+      <div class="work-thumb" style="background:linear-gradient(135deg,#020d18,#0a2540,#003320);position:relative;overflow:hidden;">
+        <svg style="position:absolute;bottom:0;left:0;width:100%;height:65%;opacity:0.5" viewBox="0 0 300 80" preserveAspectRatio="none">
+          <polyline points="0,70 30,55 60,65 90,40 120,50 150,25 180,35 210,15 240,28 270,10 300,20" fill="none" stroke="#00ff88" stroke-width="2.5"/>
+          <polyline points="0,75 30,65 60,70 90,52 120,60 150,40 180,48 210,30 240,42 270,22 300,32" fill="none" stroke="#00c8ff" stroke-width="1.5" stroke-dasharray="4 2"/>
+        </svg>
+        <div style="position:absolute;top:12px;left:14px;font-family:'Space Mono',monospace;font-size:0.6rem;color:#00ff88;letter-spacing:0.1em">NASDAQ ▲ 2.4%</div>
+        <div style="position:absolute;top:12px;right:14px;font-family:'Space Mono',monospace;font-size:0.6rem;color:#00c8ff">AI PRED</div>
+        <div style="text-align:center;position:relative;z-index:1">
+          <div style="font-size:2.5rem">📈</div>
+          <div style="font-family:'Syne',sans-serif;font-weight:800;color:white;font-size:1.1rem;margin-top:8px">StockSense</div>
+        </div>
+        <div class="work-overlay"><button class="view-btn" onclick="showProject('StockSense AI','SaaS / FinTech','AI-powered stock market prediction platform with real-time charts, sentiment analysis, portfolio tracker & automated buy/sell signals.','React · Python · TensorFlow · WebSocket','89% prediction accuracy · 15,000+ traders')">View Case Study</button></div>
+      </div>
+      <div class="work-info"><div class="work-cat">SaaS / FinTech</div><div class="work-title">StockSense AI</div><div class="work-desc-small">AI-powered stock prediction with 89% accuracy</div></div>
+    </div>
+
+    <!-- FinVault -->
+    <div class="work-card" data-cat="saas">
+      <div class="work-thumb" style="background:linear-gradient(135deg,#0f172a,#1e3a5f,#0c3460);position:relative;overflow:hidden;">
+        <div style="position:absolute;top:12px;left:14px;font-family:'Space Mono',monospace;font-size:0.6rem;color:#0ea5e9;letter-spacing:0.1em">BALANCE ▲ $12,450</div>
+        <div style="text-align:center;position:relative;z-index:1">
+          <div style="font-size:2.5rem">💳</div>
+          <div style="font-family:'Syne',sans-serif;font-weight:800;color:white;font-size:1.1rem;margin-top:8px">FinVault</div>
+        </div>
+        <div class="work-overlay"><button class="view-btn" onclick="showProject('FinVault Dashboard','SaaS / FinTech','Next-gen banking dashboard with real-time transactions, AI spending insights & portfolio tracking for modern finance teams.','React · Node.js · Stripe · PostgreSQL','↑ 320% increase in user engagement')">View Case Study</button></div>
+      </div>
+      <div class="work-info"><div class="work-cat">SaaS / FinTech</div><div class="work-title">FinVault Dashboard</div><div class="work-desc-small">Next-gen banking dashboard with AI insights</div></div>
+    </div>
+
+    <!-- EstateX -->
+    <div class="work-card" data-cat="brand">
+      <div class="work-thumb" style="background:linear-gradient(135deg,#0f2017,#14532d,#166534);position:relative;overflow:hidden;">
+        <div style="text-align:center;position:relative;z-index:1">
+          <div style="font-size:2.5rem">🏡</div>
+          <div style="font-family:'Syne',sans-serif;font-weight:800;color:white;font-size:1.1rem;margin-top:8px">EstateX</div>
+        </div>
+        <div class="work-overlay"><button class="view-btn" onclick="showProject('EstateX Realty','Real Estate / Web App','Luxury real estate platform with 3D property tours, AI price predictions & mortgage calculator for high-end property buyers.','Next.js · Three.js · Mapbox · Supabase','↑ 480% increase in property inquiries')">View Case Study</button></div>
+      </div>
+      <div class="work-info"><div class="work-cat">Real Estate / Web App</div><div class="work-title">EstateX Realty</div><div class="work-desc-small">Luxury real estate with 3D property tours</div></div>
+    </div>
+
+    <!-- Savora -->
+    <div class="work-card" data-cat="ecom">
+      <div class="work-thumb" style="background:linear-gradient(135deg,#1a0a00,#7c2d12,#9a3412);position:relative;overflow:hidden;">
+        <div style="text-align:center;position:relative;z-index:1">
+          <div style="font-size:2.5rem">🍽️</div>
+          <div style="font-family:'Syne',sans-serif;font-weight:800;color:white;font-size:1.1rem;margin-top:8px">Savora</div>
+        </div>
+        <div class="work-overlay"><button class="view-btn" onclick="showProject('Savora Restaurant','Food & Beverage / E-commerce','Fine dining brand with online reservations, delivery system & interactive menu with food stories for a premium restaurant experience.','React · Stripe · Firebase · GSAP','↑ 260% increase in online orders')">View Case Study</button></div>
+      </div>
+      <div class="work-info"><div class="work-cat">Food & Beverage / E-commerce</div><div class="work-title">Savora Restaurant</div><div class="work-desc-small">Fine dining brand with delivery system</div></div>
+    </div>
+
+    <!-- IronForge -->
+    <div class="work-card" data-cat="landing">
+      <div class="work-thumb" style="background:linear-gradient(135deg,#0a0a0a,#4c1d95,#5b21b6);position:relative;overflow:hidden;">
+        <div style="text-align:center;position:relative;z-index:1">
+          <div style="font-size:2.5rem">💪</div>
+          <div style="font-family:'Syne',sans-serif;font-weight:800;color:white;font-size:1.1rem;margin-top:8px">IronForge</div>
+        </div>
+        <div class="work-overlay"><button class="view-btn" onclick="showProject('IronForge Gym','Fitness / Landing Page','High-energy fitness brand with membership portal, workout tracker & trainer booking system for a premium gym experience.','React · Supabase · GSAP · Stripe','↑ 390% increase in memberships')">View Case Study</button></div>
+      </div>
+      <div class="work-info"><div class="work-cat">Fitness / Landing Page</div><div class="work-title">IronForge Gym</div><div class="work-desc-small">High-energy fitness brand with membership portal</div></div>
+    </div>
+
+    <!-- LexCore -->
+    <div class="work-card" data-cat="brand">
+      <div class="work-thumb" style="background:linear-gradient(135deg,#0c0c0c,#1c1917,#292524);position:relative;overflow:hidden;">
+        <div style="text-align:center;position:relative;z-index:1">
+          <div style="font-size:2.5rem">⚖️</div>
+          <div style="font-family:'Syne',sans-serif;font-weight:800;color:white;font-size:1.1rem;margin-top:8px">LexCore</div>
+        </div>
+        <div class="work-overlay"><button class="view-btn" onclick="showProject('LexCore Law Firm','Legal / Business Website','Premium law firm website with case consultation booking, attorney profiles & secure document portal for high-profile legal services.','Next.js · Sanity CMS · Calendly · Stripe','↑ 210% increase in consultations')">View Case Study</button></div>
+      </div>
+      <div class="work-info"><div class="work-cat">Legal / Business Website</div><div class="work-title">LexCore Law Firm</div><div class="work-desc-small">Premium legal brand with consultation booking</div></div>
+    </div>
+
+    <!-- MediCare -->
+    <div class="work-card" data-cat="saas">
+      <div class="work-thumb" style="background:linear-gradient(135deg,#001a2c,#0c4a6e,#075985);position:relative;overflow:hidden;">
+        <div style="text-align:center;position:relative;z-index:1">
+          <div style="font-size:2.5rem">🏥</div>
+          <div style="font-family:'Syne',sans-serif;font-weight:800;color:white;font-size:1.1rem;margin-top:8px">MediCare</div>
+        </div>
+        <div class="work-overlay"><button class="view-btn" onclick="showProject('MediCare Clinic','Healthcare / Web App','Modern healthcare platform with doctor booking, telemedicine, prescription tracking & patient dashboard for clinics and hospitals.','React · Node.js · PostgreSQL · WebRTC','↑ 550% increase in appointments')">View Case Study</button></div>
+      </div>
+      <div class="work-info"><div class="work-cat">Healthcare / Web App</div><div class="work-title">MediCare Clinic</div><div class="work-desc-small">Modern healthcare with telemedicine platform</div></div>
+    </div>
+
+    <!-- LearnFlow -->
+    <div class="work-card" data-cat="saas">
+      <div class="work-thumb" style="background:linear-gradient(135deg,#0f0a1e,#312e81,#3730a3);position:relative;overflow:hidden;">
+        <div style="text-align:center;position:relative;z-index:1">
+          <div style="font-size:2.5rem">🎓</div>
+          <div style="font-family:'Syne',sans-serif;font-weight:800;color:white;font-size:1.1rem;margin-top:8px">LearnFlow</div>
+        </div>
+        <div class="work-overlay"><button class="view-btn" onclick="showProject('LearnFlow EdTech','Education / SaaS','Online learning platform with live classes, AI-powered quizzes, progress tracking & certificate system for modern online education.','Next.js · WebRTC · MongoDB · Stripe','↑ 430% increase in course enrollments')">View Case Study</button></div>
+      </div>
+      <div class="work-info"><div class="work-cat">Education / SaaS</div><div class="work-title">LearnFlow EdTech</div><div class="work-desc-small">Online learning with AI-powered quizzes</div></div>
+    </div>
+
+    <!-- AuraStay -->
+    <div class="work-card" data-cat="ecom">
+      <div class="work-thumb" style="background:linear-gradient(135deg,#1a0f00,#78350f,#92400e);position:relative;overflow:hidden;">
+        <div style="text-align:center;position:relative;z-index:1">
+          <div style="font-size:2.5rem">🏨</div>
+          <div style="font-family:'Syne',sans-serif;font-weight:800;color:white;font-size:1.1rem;margin-top:8px">AuraStay</div>
+        </div>
+        <div class="work-overlay"><button class="view-btn" onclick="showProject('AuraStay Hotels','Hospitality / E-commerce','Luxury hotel chain with immersive room tours, instant booking, concierge chat & loyalty rewards for a premium hospitality experience.','Next.js · Stripe · Three.js · Firebase','↑ 370% increase in direct bookings')">View Case Study</button></div>
+      </div>
+      <div class="work-info"><div class="work-cat">Hospitality / E-commerce</div><div class="work-title">AuraStay Hotels</div><div class="work-desc-small">Luxury hotel chain with immersive room tours</div></div>
+    </div>
+
   </div>
 </section>
 
@@ -161,7 +282,7 @@
 
 <footer>
   <div class="footer-grid">
-    <div class="footer-brand"><a class="logo" href="../index.html">MDV<span>SOLUTIONS</span></a><p>Building extraordinary digital experiences for ambitious brands.</p></div>
+    <div class="footer-brand"><a class="logo" href="../index.html">MDV <span>SOLUTIONS</span></a><p>Building extraordinary digital experiences for ambitious brands.</p></div>
     <div class="footer-col"><h4>Services</h4><ul class="footer-links"><li><a href="services.html">All Services</a></li></ul></div>
     <div class="footer-col"><h4>Company</h4><ul class="footer-links"><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li></ul></div>
     <div class="footer-col"><h4>Legal</h4><ul class="footer-links"><li><a href="privacy.html">Privacy Policy</a></li><li><a href="terms.html">Terms</a></li></ul></div>
@@ -184,5 +305,58 @@ document.getElementById('project-modal').addEventListener('click', e => {
     document.getElementById('project-modal').classList.remove('open');
 });
 </script>
+
+<!-- WhatsApp + Chat Bubble -->
+<style>
+  .wa-btn {
+    position: fixed; bottom: 24px; right: 24px; z-index: 9999;
+    width: 56px; height: 56px; border-radius: 50%;
+    background: #25d366; border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 20px rgba(37,211,102,0.5);
+    transition: transform 0.2s, box-shadow 0.2s; text-decoration: none;
+  }
+  .wa-btn:hover { transform: scale(1.1); }
+  .wa-btn svg { width: 28px; height: 28px; fill: white; }
+  .wa-btn .wa-dot { position: absolute; top: 3px; right: 3px; width: 11px; height: 11px; border-radius: 50%; background: #fff; border: 2px solid #25d366; animation: waPulse 2s infinite; }
+  @keyframes waPulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.3)} }
+  .wa-btn::before { content: 'Chat on WhatsApp'; position: absolute; right: 68px; top: 50%; transform: translateY(-50%); background: #1a1a1a; color: #fff; font-family: 'DM Sans', sans-serif; font-size: 0.75rem; padding: 6px 12px; border-radius: 6px; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
+  .wa-btn:hover::before { opacity: 1; }
+
+  .mdv-btn { position: fixed; bottom: 92px; right: 24px; z-index: 9999; width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, #2563eb, #06b6d4); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; box-shadow: 0 4px 20px rgba(37,99,235,0.5); transition: transform 0.2s; }
+  .mdv-btn:hover { transform: scale(1.08); }
+  .mdv-btn .ndot { position: absolute; top: 3px; right: 3px; width: 11px; height: 11px; border-radius: 50%; background: #22c55e; border: 2px solid #060606; animation: ndotAnim 2s infinite; }
+  @keyframes ndotAnim { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+  .mdv-win { position: fixed; z-index: 9998; bottom: 158px; right: 24px; width: 380px; height: 560px; border-radius: 18px; overflow: hidden; box-shadow: 0 24px 64px rgba(0,0,0,0.6); display: none; }
+  .mdv-win.open { display: block; animation: winPop 0.25s cubic-bezier(0.34,1.4,0.64,1) both; }
+  .mdv-win iframe { width: 100%; height: 100%; border: none; display: block; }
+  @keyframes winPop { from{opacity:0;transform:scale(0.9) translateY(20px)} to{opacity:1;transform:scale(1) translateY(0)} }
+
+  @media(max-width:600px) {
+    .wa-btn { bottom: 16px; right: 16px; width: 50px; height: 50px; }
+    .wa-btn::before { display: none; }
+    .mdv-btn { bottom: 80px; right: 16px; width: 52px; height: 52px; }
+    .mdv-win { bottom: 0; right: 0; left: 0; width: 100%; height: 85dvh; border-radius: 20px 20px 0 0; }
+  }
+</style>
+
+<a class="wa-btn" href="https://wa.me/911234567890?text=Hello%20MDV%20Solutions!%20I%20would%20like%20to%20discuss%20a%20project." target="_blank" rel="noopener">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  <div class="wa-dot"></div>
+</a>
+
+<button class="mdv-btn" id="mdv-btn" onclick="mdvOpen()">💬<div class="ndot"></div></button>
+<div class="mdv-win" id="mdv-win"><iframe src="mdv-chatbot.html"></iframe></div>
+
+<script>
+  function mdvOpen() { document.getElementById('mdv-win').classList.toggle('open'); }
+  document.addEventListener('click', function(e) {
+    const w = document.getElementById('mdv-win'), b = document.getElementById('mdv-btn');
+    if (w.classList.contains('open') && !w.contains(e.target) && !b.contains(e.target)) w.classList.remove('open');
+  });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') document.getElementById('mdv-win').classList.remove('open'); });
+</script>
+
 </body>
 </html>
