@@ -288,6 +288,16 @@
     }
   });
 </script>
+  <script>
+  window.quick = function(text) {
+    document.getElementById('msg-input').value = text;
+    send();
+    document.getElementById('quick-chips').style.display = 'none';
+  }
+  window.send = send;
+  window.clearChat = clearChat;
+</script>
+  
   <!-- WhatsApp Button -->
 <style>
   .wa-btn {
